@@ -1,0 +1,119 @@
+import React, { useState } from 'react';
+import { supabase } from '../lib/supabase';
+import { useNavigate } from 'react-router-dom';
+import { Loader2, Mail, Lock } from 'lucide-react';
+
+export default function Login() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('test@onfans.com'); // 기본 예시 이메일
+  const [password, setPassword] = useState('1234'); // 기본 예시 비밀번호
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    // 개발/테스트용 계정 강제 우회 로직 (실제 DB에 없어도 로그인 되도록)
+    if (email === 'test@onfans.com' || email === 'admin@onfans.com') {
+      setTimeout(() => {
+        setLoading(false);
+        // 목업 인증 토큰 저장 (ProtectedRoute 우회용)
+        localStorage.setItem('mock_auth', email.includes('admin') ? 'admin' : 'seller');
+        
+        if (email.includes('admin')) {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
+      }, 500);
+      return;
+    }
+
+    // 환경 변수 설정 안된 경우 시뮬레이션 로직
+    if (import.meta.env.VITE_SUPABASE_URL === undefined) {
+      setTimeout(() => {
+        setLoading(false);
+        if (email.includes('admin')) {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
+      }, 500);
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      
+      // 로그인 성공: 간단한 권한 체크 (여기서는 임시로 이메일 기반 라우팅)
+      if (email.includes('admin')) {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
+    } catch (err: any) {
+      if (err.message?.includes('Invalid login credentials')) {
+        setError('아이디 또는 비밀번호가 일치하지 않습니다.');
+      } else {
+        setError(err.message || '인증 과정에서 오류가 발생했습니다.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-sm">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-black tracking-tighter text-black">ONFANS</h1>
+          <p className="mt-2 text-sm text-gray-500">
+            파트너 대시보드에 로그인하세요.
+          </p>
+        </div>
+
+        {error && (
+          <div className="mb-4 rounded-lg bg-red-50 p-4 text-sm font-medium text-red-600">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="이메일 주소"
+              required
+              className="w-full rounded-xl border border-gray-300 bg-gray-50 py-3 pl-12 pr-4 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
+            />
+          </div>
+          <div className="relative">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="비밀번호"
+              required
+              className="w-full rounded-xl border border-gray-300 bg-gray-50 py-3 pl-12 pr-4 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-3.5 text-sm font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:hover:scale-100"
+          >
+            {loading ? <Loader2 size={20} className="animate-spin" /> : '로그인'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
