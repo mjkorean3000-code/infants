@@ -5,8 +5,8 @@ import { Loader2, Mail, Lock } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('test@onfans.com'); // 기본 예시 이메일
-  const [password, setPassword] = useState('1234'); // 기본 예시 비밀번호
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
