@@ -91,18 +91,20 @@ function FactoryApply() {
     <div className="min-h-screen bg-[#0a0a0a] font-sans selection:bg-white selection:text-black">
       {/* Navbar */}
       <nav className="flex items-center justify-between px-6 py-6 sm:px-12">
-        <div className="text-xl font-black tracking-tighter text-white">ONFANS FACTORY</div>
-        <a href="/apply" className="rounded-full bg-white/10 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/20">
-          인플루언서(셀러) 입점하기
+        <div className="text-xl font-black tracking-tighter text-white shrink-0">ONFANS FACTORY</div>
+        <a href="/apply" className="rounded-full bg-white/10 px-4 py-2 text-[11px] sm:text-sm font-bold text-white transition-colors hover:bg-white/20 whitespace-nowrap ml-4">
+          인플루언서 입점하기
         </a>
       </nav>
 
       {/* Hero Section */}
-      <section className="px-6 py-12 sm:px-12 sm:py-20">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="mb-6 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            수만 명의 셀러와 연결되는<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500">가장 빠른 방법.</span>
+      <section className="px-6 py-10 sm:px-12 sm:py-20">
+        <div className="mx-auto max-w-5xl text-center">
+          <h1 className="mb-6 text-[32px] font-black leading-[1.2] tracking-tight text-white sm:text-6xl lg:text-7xl break-keep">
+            수만 명의 셀러와 연결되는
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-500">
+              가장 빠른 방법.
+            </span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400 sm:text-xl">
             제품만 등록하세요. 마케팅과 판매는 온팬즈 파트너 셀러들이 담당합니다.

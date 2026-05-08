@@ -1,6 +1,5 @@
 import { useDashboardData } from '../hooks/useDashboardData';
 import { SummaryCards } from '../components/SummaryCards';
-import { PromoLinkCard } from '../components/PromoLinkCard';
 import { RevenueChart } from '../components/RevenueChart';
 import { RecentOrders } from '../components/RecentOrders';
 import { ProductCatalog } from '../components/ProductCatalog';
@@ -29,15 +28,8 @@ function SellerDashboard() {
       {/* 상단 요약 카드 (모바일 1열, 태블릿 3열) */}
       <SummaryCards summary={summary} />
 
-      {/* 중간 영역: 수익 차트 & 프로모션 링크 (모바일 1열, 데스크탑 2:1 비율) */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <RevenueChart data={revenueChart} />
-        </div>
-        <div className="lg:col-span-1">
-          <PromoLinkCard influencer={influencer} />
-        </div>
-      </div>
+      {/* 수익 차트 */}
+      <RevenueChart data={revenueChart} />
 
       {/* 메인 영역: 상품 카탈로그 (링크 자동 생성) */}
       <ProductCatalog influencer={influencer} />

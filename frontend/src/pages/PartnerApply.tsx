@@ -81,13 +81,13 @@ function PartnerApply() {
       </nav>
 
       {/* Hero Section */}
-      <section className="px-6 py-16 sm:px-12 sm:py-24 lg:py-32">
+      <section className="px-6 py-12 sm:px-12 sm:py-24 lg:py-32">
         <div className="mx-auto max-w-4xl text-center">
-          <h1 className="mb-6 text-5xl font-black leading-tight tracking-tight text-white sm:text-6xl lg:text-7xl">
+          <h1 className="mb-6 text-[36px] font-black leading-[1.2] tracking-tight text-white sm:text-6xl lg:text-7xl break-keep">
             무재고로 시작하는<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500">나만의 브랜드.</span>
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400 sm:text-xl">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400 sm:text-xl break-keep">
             재고 부담, 배송, CS 스트레스 없이 오직 콘텐츠에만 집중하세요. 온팬즈가 당신의 커머스를 현실로 만듭니다.
           </p>
         </div>
@@ -144,18 +144,19 @@ function PartnerApply() {
               </div>
             </div>
 
-                <div className="mb-4">
-                  <label className="mb-2 block text-sm font-bold text-gray-700">연락용 이메일 주소</label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="admin@onfans.com"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-black focus:bg-white focus:outline-none"
-                  />
-                </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-sm font-bold text-gray-900">연락용 이메일 주소</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required
+                placeholder="example@naver.com"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 px-4 py-3 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
+              />
+            </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="category" className="text-sm font-bold text-gray-900">주요 활동 카테고리</label>
