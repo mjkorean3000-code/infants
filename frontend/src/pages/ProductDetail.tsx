@@ -13,9 +13,13 @@ interface ProductData {
     color?: string[];
     size?: string[];
   };
+  factory_id?: string;
   status: string;
   factories?: {
     name: string;
+  };
+  factory_applications?: {
+    company_name: string;
   };
 }
 
@@ -40,7 +44,7 @@ const MOCK_PRODUCT: ProductData = {
 };
 
 export default function ProductDetail() {
-  const { id } = useParams();
+  const { id, code } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   
@@ -55,11 +59,10 @@ export default function ProductDetail() {
 
   // 1. 트래킹 로직 & 데이터 패치
   useEffect(() => {
-    // URL에서 seller 파라미터 낚아채기
+    // URL에서 seller 파라미터 낚아채기 (기존 호환)
     const sellerId = searchParams.get('seller');
-    if (sellerId) {
+    if (sellerId && !code) {
       localStorage.setItem('onfans_seller_id', sellerId);
-      console.log('✅ Seller ID saved to localStorage:', sellerId);
     }
 
     // 상품 데이터 가져오기
@@ -67,6 +70,7 @@ export default function ProductDetail() {
       try {
         if (import.meta.env.VITE_SUPABASE_URL === undefined) {
           // 환경변수 없으면 시뮬레이션
+          if (code) localStorage.setItem('onfans_seller_id', 'mock-influencer-1234');
           setTimeout(() => {
             setProduct(MOCK_PRODUCT);
             setLoading(false);
@@ -74,14 +78,43 @@ export default function ProductDetail() {
           return;
         }
 
+        // 고유 코드가 URL에 있다면 인플루언서 UUID 조회
+        if (code) {
+          const { data: infData } = await supabase
+            .from('influencers')
+            .select('id')
+            .eq('tracking_link', code)
+            .single();
+            
+          if (infData) {
+            localStorage.setItem('onfans_seller_id', infData.id);
+            console.log('✅ Influencer mapped by code:', code);
+          }
+        }
+
         const { data, error } = await supabase
           .from('products')
-          .select('*, factories(name)')
+          .select('*')
           .eq('id', id)
           .single();
 
         if (error) throw error;
-        setProduct(data as ProductData);
+        const productData = data as ProductData;
+
+        // 제조사 이름 가져오기 (factory_applications에서)
+        if (productData.factory_id) {
+          const { data: factoryData } = await supabase
+            .from('factory_applications')
+            .select('company_name')
+            .eq('id', productData.factory_id)
+            .single();
+            
+          if (factoryData) {
+            productData.factory_applications = factoryData;
+          }
+        }
+        
+        setProduct(productData);
       } catch (err) {
         console.error('Error fetching product:', err);
         // 오류 발생 시 목업 데이터로 폴백
@@ -193,9 +226,9 @@ export default function ProductDetail() {
 
       {/* 2. 상품 정보 및 옵션 영역 */}
       <div className="p-5 lg:p-0 flex flex-col h-full">
-        {product.factories?.name && (
+        {product.factory_applications?.company_name && (
           <div className="mb-2 inline-flex items-center gap-1 rounded bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-600">
-            제조사: {product.factories.name}
+            제조사: {product.factory_applications.company_name}
           </div>
         )}
         <h1 className="mb-2 text-2xl font-bold text-gray-900">{product.name}</h1>

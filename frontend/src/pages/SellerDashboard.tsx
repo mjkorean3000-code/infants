@@ -3,6 +3,7 @@ import { SummaryCards } from '../components/SummaryCards';
 import { PromoLinkCard } from '../components/PromoLinkCard';
 import { RevenueChart } from '../components/RevenueChart';
 import { RecentOrders } from '../components/RecentOrders';
+import { ProductCatalog } from '../components/ProductCatalog';
 import { Loader2 } from 'lucide-react';
 
 function SellerDashboard() {
@@ -37,6 +38,9 @@ function SellerDashboard() {
           <PromoLinkCard influencer={influencer} />
         </div>
       </div>
+
+      {/* 메인 영역: 상품 카탈로그 (링크 자동 생성) */}
+      <ProductCatalog influencer={influencer} />
 
       {/* 하단 최근 주문 테이블 */}
       <RecentOrders orders={recentOrders} />

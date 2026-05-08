@@ -18,6 +18,7 @@ function App() {
         <Route path="/apply" element={<PartnerApply />} />
         <Route path="/factory-apply" element={<FactoryApply />} />
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/product/:id/:code" element={<ProductDetail />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, Mail, Lock } from 'lucide-react';
+import { Loader2, AtSign, Lock } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,13 +16,13 @@ export default function Login() {
     setError(null);
 
     // 개발/테스트용 계정 강제 우회 로직 (실제 DB에 없어도 로그인 되도록)
-    if (email === 'test@onfans.com' || email === 'admin@onfans.com') {
+    if (loginId === 'test@onfans.com' || loginId === 'admin@onfans.com' || loginId === '@test') {
       setTimeout(() => {
         setLoading(false);
         // 목업 인증 토큰 저장 (ProtectedRoute 우회용)
-        localStorage.setItem('mock_auth', email.includes('admin') ? 'admin' : 'seller');
+        localStorage.setItem('mock_auth', loginId.includes('admin') ? 'admin' : 'seller');
         
-        if (email.includes('admin')) {
+        if (loginId.includes('admin')) {
           navigate('/admin');
         } else {
           navigate('/dashboard');
@@ -35,7 +35,7 @@ export default function Login() {
     if (import.meta.env.VITE_SUPABASE_URL === undefined) {
       setTimeout(() => {
         setLoading(false);
-        if (email.includes('admin')) {
+        if (loginId.includes('admin')) {
           navigate('/admin');
         } else {
           navigate('/dashboard');
@@ -45,14 +45,36 @@ export default function Login() {
     }
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      
-      // 로그인 성공: 간단한 권한 체크 (여기서는 임시로 이메일 기반 라우팅)
-      if (email.includes('admin')) {
-        navigate('/admin');
-      } else {
+      // 이메일 형식(관리자)인지, 일반 아이디(셀러)인지 구분
+      const isEmail = loginId.includes('@') && loginId.includes('.');
+
+      if (!isEmail) {
+        // 인플루언서(셀러) SNS 아이디 로그인 처리
+        const cleanId = loginId.replace(/^@/, '').trim();
+        
+        const { data, error: fetchError } = await supabase
+          .from('influencers')
+          .select('*')
+          .or(`instagram_id.eq.${cleanId},instagram_id.eq.@${cleanId}`)
+          .eq('password', password)
+          .single();
+
+        if (fetchError || !data) {
+          console.error("Login fetch error:", fetchError);
+          throw new Error('인스타그램 아이디 또는 비밀번호가 일치하지 않거나 승인 대기 중입니다.');
+        }
+
+        // 로그인 성공 (셀러)
+        localStorage.setItem('mock_auth', 'seller');
         navigate('/dashboard');
+        
+      } else {
+        // 관리자 이메일 로그인 처리
+        const { error } = await supabase.auth.signInWithPassword({ email: loginId, password });
+        if (error) throw error;
+        
+        localStorage.setItem('mock_auth', 'admin');
+        navigate('/admin');
       }
     } catch (err: any) {
       if (err.message?.includes('Invalid login credentials')) {
@@ -83,12 +105,12 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <AtSign className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일 주소"
+              type="text"
+              value={loginId}
+              onChange={(e) => setLoginId(e.target.value)}
+              placeholder="인스타그램 아이디"
               required
               className="w-full rounded-xl border border-gray-300 bg-gray-50 py-3 pl-12 pr-4 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
             />

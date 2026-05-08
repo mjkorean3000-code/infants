@@ -3,9 +3,11 @@ import { supabase } from '../lib/supabase';
 
 export interface DashboardData {
   influencer: {
+    id: string;
     name: string;
     tracking_link: string;
     settlement_rate: number;
+    category: string;
   } | null;
   summary: {
     totalSalesMonth: number;
@@ -26,9 +28,11 @@ export interface DashboardData {
 // 목업 데이터
 const MOCK_DATA: DashboardData = {
   influencer: {
+    id: 'mock-inf-1',
     name: '테스트 인플루언서',
     tracking_link: 'https://onfans.com/r/test-code-123',
     settlement_rate: 15.0,
+    category: 'fashion'
   },
   summary: {
     totalSalesMonth: 12500000,
@@ -122,7 +126,13 @@ export const useDashboardData = () => {
         const revenueChart = MOCK_DATA.revenueChart; // 임시 목업 차트
 
         setData({
-          influencer,
+          influencer: {
+            id: influencer.id,
+            name: influencer.name || influencer.instagram_id,
+            tracking_link: influencer.tracking_link || '',
+            settlement_rate: Number(influencer.settlement_rate) || 0,
+            category: influencer.category || 'fashion'
+          },
           summary: { totalSalesMonth, estimatedProfit, newOrdersToday },
           revenueChart,
           recentOrders,

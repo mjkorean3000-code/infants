@@ -1,11 +1,11 @@
 import { useAdminData } from '../hooks/useAdminData';
-import { AdminSummary } from '../components/admin/AdminSummary';
-import { FactoryApprovals } from '../components/admin/FactoryApprovals';
 import { SettlementReport } from '../components/admin/SettlementReport';
+import { ProductManagement } from '../components/admin/ProductManagement';
+import { InfluencerManagement } from '../components/admin/InfluencerManagement';
 import { Loader2 } from 'lucide-react';
 
 function AdminDashboard() {
-  const { data, approveFactory } = useAdminData();
+  const { data } = useAdminData();
 
   if (data.loading) {
     return (
@@ -27,14 +27,15 @@ function AdminDashboard() {
         </div>
       </header>
 
-      {/* 최상단 메인 지표 */}
-      <AdminSummary summary={data.summary} />
-
       <div className="grid grid-cols-1 gap-6">
-        {/* 중앙 메인 영역: 공장 승인 & 정산 리포트 */}
+        {/* 중앙 메인 영역 */}
         <div className="flex flex-col gap-6">
-          <FactoryApprovals approvals={data.factoryApprovals} onApprove={approveFactory} />
-          <SettlementReport settlements={data.settlements} />
+          <InfluencerManagement />
+          <ProductManagement />
+          <SettlementReport 
+            factorySettlements={data.factorySettlements} 
+            influencerSettlements={data.influencerSettlements} 
+          />
         </div>
       </div>
     </div>

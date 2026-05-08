@@ -11,7 +11,10 @@ export const PromoLinkCard = ({ influencer }: Props) => {
 
   const handleCopy = () => {
     if (!influencer?.tracking_link) return;
-    navigator.clipboard.writeText(influencer.tracking_link);
+    const fullLink = influencer.tracking_link.startsWith('http') 
+      ? influencer.tracking_link 
+      : `https://onfans.vercel.app/store/${influencer.tracking_link}`;
+    navigator.clipboard.writeText(fullLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -28,7 +31,9 @@ export const PromoLinkCard = ({ influencer }: Props) => {
       <div className="mt-auto flex items-center rounded-xl border border-gray-200 bg-bg-base px-4 py-3">
         <LinkIcon size={16} className="mr-2 text-gray-400 shrink-0" />
         <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-primary">
-          {influencer?.tracking_link || '링크 정보 없음'}
+          {influencer?.tracking_link 
+            ? (influencer.tracking_link.startsWith('http') ? influencer.tracking_link : `https://onfans.vercel.app/store/${influencer.tracking_link}`)
+            : '링크 생성 중...'}
         </span>
       </div>
 

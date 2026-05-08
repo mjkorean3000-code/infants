@@ -6,8 +6,7 @@ function PartnerApply() {
   const [formData, setFormData] = useState({
     instagram_id: '',
     email: '',
-    category: 'fashion',
-    settlement_account: ''
+    category: 'fashion'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -33,7 +32,6 @@ function PartnerApply() {
             instagram_id: formData.instagram_id,
             email: formData.email,
             category: formData.category,
-            settlement_account: formData.settlement_account,
             status: 'pending'
           }
         ]);
@@ -146,19 +144,18 @@ function PartnerApply() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-bold text-gray-900">연락받으실 이메일</label>
-              <input 
-                type="email" 
-                id="email" 
-                name="email" 
-                required
-                placeholder="hello@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 px-4 py-3 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
-              />
-            </div>
+                <div className="mb-4">
+                  <label className="mb-2 block text-sm font-bold text-gray-700">연락용 이메일 주소</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="admin@onfans.com"
+                    className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm focus:border-black focus:bg-white focus:outline-none"
+                  />
+                </div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="category" className="text-sm font-bold text-gray-900">주요 활동 카테고리</label>
@@ -169,26 +166,13 @@ function PartnerApply() {
                 onChange={handleChange}
                 className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 px-4 py-3 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none appearance-none"
               >
-                <option value="fashion">패션 / 의류</option>
+                <option value="fashion">의류 / 패션잡화</option>
                 <option value="beauty">뷰티 / 코스메틱</option>
-                <option value="lifestyle">리빙 / 라이프스타일</option>
-                <option value="tech">테크 / 전자기기</option>
+                <option value="living">리빙 / 홈데코</option>
+                <option value="digital">디지털 / 전자기기</option>
+                <option value="food">식품 / 건강</option>
                 <option value="other">기타</option>
               </select>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="settlement_account" className="text-sm font-bold text-gray-900">정산 계좌번호</label>
-              <input 
-                type="text" 
-                id="settlement_account" 
-                name="settlement_account" 
-                required
-                placeholder="은행명 및 계좌번호 입력"
-                value={formData.settlement_account}
-                onChange={handleChange}
-                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 px-4 py-3 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
-              />
             </div>
 
             <button 
