@@ -61,35 +61,21 @@ export function InfluencerManagement() {
   };
 
   const handleApprove = async (id: string) => {
-    if (!confirm('해당 셀러를 승인하고 고유 코드를 발급하시겠습니까?')) return;
+    if (!confirm('해당 셀러를 승인하시겠습니까? 고유 링크가 자동으로 발급됩니다.')) return;
     
     setProcessingId(id);
     try {
-      // 4자리 고유 코드 생성 (알파벳 대문자 + 숫자)
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let code = '';
-      for (let i = 0; i < 4; i++) {
-        code += characters.charAt(Math.floor(Math.random() * characters.length));
-      }
-
-      // 4자리 숫자 비밀번호 랜덤 생성
-      const randomPassword = Math.floor(1000 + Math.random() * 9000).toString();
-
       if (import.meta.env.VITE_SUPABASE_URL) {
         const { error } = await supabase
           .from('influencers')
-          .update({ 
-            status: 'approved',
-            tracking_link: code,
-            password: randomPassword
-          })
+          .update({ status: 'approved' }) // tracking_link는 DB 트리거가 자동 생성
           .eq('id', id);
 
         if (error) throw error;
       }
       
-      alert(`승인 완료! 고유 코드 [${code}] 와 초기 비밀번호 [${randomPassword}] 가 발급되었습니다.`);
-      fetchInfluencers(); // 목록 새로고침
+      alert('승인 완료! 고유 판매 링크가 자동으로 발급되었습니다.');
+      fetchInfluencers();
     } catch (err: any) {
       console.error('Error approving influencer:', err);
       alert(`승인 중 오류 발생: ${err.message}`);
@@ -118,8 +104,7 @@ export function InfluencerManagement() {
               <th className="px-6 py-4 font-semibold">카테고리</th>
               <th className="px-6 py-4 font-semibold text-center">매칭된 상품 수</th>
               <th className="px-6 py-4 font-semibold text-center">상태</th>
-              <th className="px-6 py-4 font-semibold text-center">초기 비밀번호</th>
-              <th className="px-6 py-4 font-semibold text-center">고유 코드</th>
+              <th className="px-6 py-4 font-semibold text-center">고유 링크 코드</th>
               <th className="px-6 py-4 font-semibold text-right">관리</th>
             </tr>
           </thead>
@@ -163,21 +148,12 @@ export function InfluencerManagement() {
                     )}
                   </td>
                   <td className="px-6 py-4 text-center">
-                    {influencer.password ? (
-                      <span className="font-mono font-bold text-red-600 tracking-widest bg-red-50 px-2 py-1 rounded">
-                        {influencer.password}
-                      </span>
-                    ) : (
-                      <span className="text-gray-300">-</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 text-center">
                     {influencer.tracking_link ? (
-                      <span className="font-mono font-bold text-blue-600 tracking-wider">
+                      <span className="font-mono text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded tracking-wider">
                         {influencer.tracking_link}
                       </span>
                     ) : (
-                      <span className="text-gray-300">-</span>
+                      <span className="text-gray-300 text-xs">승인 후 자동 발급</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-right">

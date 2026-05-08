@@ -1,13 +1,12 @@
-import { useAdminData } from '../hooks/useAdminData';
-import { SettlementReport } from '../components/admin/SettlementReport';
-import { ProductManagement } from '../components/admin/ProductManagement';
 import { InfluencerManagement } from '../components/admin/InfluencerManagement';
+import { ProductManagement } from '../components/admin/ProductManagement';
 import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 function AdminDashboard() {
-  const { data } = useAdminData();
+  const [loading] = useState(false);
 
-  if (data.loading) {
+  if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">
         <Loader2 size={40} className="animate-spin text-gray-900" />
@@ -27,16 +26,9 @@ function AdminDashboard() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-6">
-        {/* 중앙 메인 영역 */}
-        <div className="flex flex-col gap-6">
-          <InfluencerManagement />
-          <ProductManagement />
-          <SettlementReport 
-            factorySettlements={data.factorySettlements} 
-            influencerSettlements={data.influencerSettlements} 
-          />
-        </div>
+      <div className="flex flex-col gap-6">
+        <InfluencerManagement />
+        <ProductManagement />
       </div>
     </div>
   );

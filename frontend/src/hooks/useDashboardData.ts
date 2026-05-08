@@ -123,7 +123,7 @@ export const useDashboardData = () => {
           amount: Number(o.total_amount)
         }));
 
-        const revenueChart = MOCK_DATA.revenueChart; // 임시 목업 차트
+        const revenueChart: { date: string; revenue: number }[] = []; // TODO: 실제 날짜별 주문 집계 쿼리로 교체 예정
 
         setData({
           influencer: {
