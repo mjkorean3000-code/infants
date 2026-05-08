@@ -15,18 +15,12 @@ export default function Login() {
     setLoading(true);
     setError(null);
 
-    // 개발/테스트용 계정 강제 우회 로직 (실제 DB에 없어도 로그인 되도록)
-    if (loginId === 'test@onfans.com' || loginId === 'admin@onfans.com' || loginId === '@test') {
+    // 셀러 테스트용 우회 (목업 대시보드)
+    if (loginId === 'test@onfans.com' || loginId === '@test') {
       setTimeout(() => {
         setLoading(false);
-        // 목업 인증 토큰 저장 (ProtectedRoute 우회용)
-        localStorage.setItem('mock_auth', loginId.includes('admin') ? 'admin' : 'seller');
-        
-        if (loginId.includes('admin')) {
-          navigate('/admin');
-        } else {
-          navigate('/dashboard');
-        }
+        localStorage.setItem('mock_auth', 'seller');
+        navigate('/dashboard');
       }, 500);
       return;
     }
