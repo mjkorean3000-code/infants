@@ -60,6 +60,7 @@ export default function Login() {
 
         // 로그인 성공 (셀러)
         localStorage.setItem('mock_auth', 'seller');
+        localStorage.setItem('seller_data', JSON.stringify(data)); // 인플루언서 정보 저장
         navigate('/dashboard');
         
       } else {

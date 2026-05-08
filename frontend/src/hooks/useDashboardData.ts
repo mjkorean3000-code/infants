@@ -75,25 +75,31 @@ export const useDashboardData = () => {
     }
 
     try {
-      // 1. 현재 로그인한 유저 정보 가져오기 (Auth)
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      
-      if (authError || !user) {
-        console.warn('사용자 인증 실패, 로그인이 필요합니다.');
-        setData(MOCK_DATA);
+      // 1. 셀러 로그인 데이터가 localStorage에 있으면 우선 사용 (SNS ID 로그인은 Supabase Auth 세션 없음)
+      const savedSeller = localStorage.getItem('seller_data');
+      let influencer: any = savedSeller ? JSON.parse(savedSeller) : null;
+      let influencerId: string | null = influencer?.id || null;
+
+      // localStorage 없으면 Supabase Auth 세션 확인 (어드민 로그인 등)
+      if (!influencer) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          influencerId = user.id;
+          const { data } = await supabase
+            .from('influencers')
+            .select('*')
+            .eq('id', influencerId)
+            .single();
+          influencer = data;
+        }
+      }
+
+      if (!influencerId || !influencer) {
+        setData(prev => ({ ...prev, loading: false }));
         return;
       }
-      
-      const influencerId = user.id;
 
-      // 2. 인플루언서 정보 조회 (RLS 적용으로 본인 것만 조회됨)
-      const { data: influencer } = await supabase
-        .from('influencers')
-        .select('*')
-        .eq('id', influencerId)
-        .single();
-
-      // 3. 이번 달 주문 내역 조회 (RLS 적용으로 본인 것만 조회됨)
+      // 2. 이번 달 주문 내역 조회
       const startOfMonth = new Date();
       startOfMonth.setDate(1);
       startOfMonth.setHours(0, 0, 0, 0);
