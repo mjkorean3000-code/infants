@@ -106,7 +106,6 @@ export const useDashboardData = () => {
         .order('created_at', { ascending: false });
 
       if (influencer && orders) {
-        // 데이터 가공 로직
         const totalSalesMonth = orders.reduce((acc, curr) => acc + Number(curr.total_amount), 0);
         const estimatedProfit = totalSalesMonth * (influencer.settlement_rate / 100);
         
@@ -114,7 +113,6 @@ export const useDashboardData = () => {
         today.setHours(0, 0, 0, 0);
         const newOrdersToday = orders.filter(o => new Date(o.created_at) >= today).length;
 
-        // 최근 주문 5개
         const recentOrders = orders.slice(0, 5).map(o => ({
           id: o.id,
           productName: o.products?.name || '알 수 없는 상품',
@@ -123,7 +121,7 @@ export const useDashboardData = () => {
           amount: Number(o.total_amount)
         }));
 
-        const revenueChart: { date: string; revenue: number }[] = []; // TODO: 실제 날짜별 주문 집계 쿼리로 교체 예정
+        const revenueChart: { date: string; revenue: number }[] = [];
 
         setData({
           influencer: {
@@ -138,10 +136,13 @@ export const useDashboardData = () => {
           recentOrders,
           loading: false
         });
+      } else {
+        // 인플루언서 정보가 없는 경우 (승인 대기 또는 어드민 계정)
+        setData(prev => ({ ...prev, loading: false }));
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
-      setData(MOCK_DATA); // 에러 시 목업 폴백
+      setData(MOCK_DATA);
     }
   };
 
