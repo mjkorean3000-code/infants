@@ -74,7 +74,7 @@ export function InfluencerManagement() {
         if (error) throw error;
       }
       
-      alert('승인 완료! 고유 판매 링크가 자동으로 발급되었습니다.');
+      alert('승인 완료! 4자리 고유 코드와 임시 비밀번호가 자동 발급되었습니다.');
       fetchInfluencers();
     } catch (err: any) {
       console.error('Error approving influencer:', err);
@@ -104,14 +104,15 @@ export function InfluencerManagement() {
               <th className="px-6 py-4 font-semibold">카테고리</th>
               <th className="px-6 py-4 font-semibold text-center">매칭된 상품 수</th>
               <th className="px-6 py-4 font-semibold text-center">상태</th>
-              <th className="px-6 py-4 font-semibold text-center">고유 링크 코드</th>
+              <th className="px-6 py-4 font-semibold text-center">임시 비밀번호</th>
+              <th className="px-6 py-4 font-semibold text-center">고유 코드 (4자리)</th>
               <th className="px-6 py-4 font-semibold text-right">관리</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {influencers.length === 0 ? (
               <tr>
-                <td colSpan={6} className="py-12 text-center text-gray-500">
+                <td colSpan={7} className="py-12 text-center text-gray-500">
                   가입한 인플루언서가 없습니다.
                 </td>
               </tr>
@@ -148,8 +149,17 @@ export function InfluencerManagement() {
                     )}
                   </td>
                   <td className="px-6 py-4 text-center">
+                    {influencer.password ? (
+                      <span className="font-mono font-bold text-red-600 tracking-widest bg-red-50 px-2 py-1 rounded text-sm">
+                        {influencer.password}
+                      </span>
+                    ) : (
+                      <span className="text-gray-300 text-xs">승인 후 발급</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-center">
                     {influencer.tracking_link ? (
-                      <span className="font-mono text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded tracking-wider">
+                      <span className="font-mono font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded tracking-widest text-sm">
                         {influencer.tracking_link}
                       </span>
                     ) : (
