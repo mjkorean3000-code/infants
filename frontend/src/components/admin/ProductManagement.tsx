@@ -213,10 +213,10 @@ export function ProductManagement() {
                         <div className="font-bold text-gray-900 line-clamp-1">{product.name}</div>
                         <div className="text-xs text-gray-500 line-clamp-1">{product.description || '설명 없음'}</div>
                         <div className="mt-1 flex items-center gap-1 text-[10px] text-gray-400">
-                          <span>🔗 onfans.vercel.app/product/{product.id.split('-')[0]}...</span>
+                          <span>🔗 onfans.club/product/{product.id.split('-')[0]}...</span>
                           <button 
                             onClick={() => {
-                              navigator.clipboard.writeText(`https://onfans.vercel.app/product/${product.id}`);
+                              navigator.clipboard.writeText(`https://onfans.club/product/${product.id}`);
                               alert('상품 판매 링크가 복사되었습니다.');
                             }}
                             className="hover:text-gray-700 underline"

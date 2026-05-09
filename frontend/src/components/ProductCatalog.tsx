@@ -66,7 +66,7 @@ export function ProductCatalog({ influencer }: Props) {
       return;
     }
 
-    const link = `https://onfans.vercel.app/product/${productId}/${influencer.tracking_link}`;
+    const link = `https://onfans.club/product/${productId}/${influencer.tracking_link}`;
     navigator.clipboard.writeText(link);
     setCopiedId(productId);
     
@@ -123,7 +123,7 @@ export function ProductCatalog({ influencer }: Props) {
                       <input 
                         type="text" 
                         readOnly 
-                        value={`https://onfans.vercel.app/product/${product.id}/${influencer?.tracking_link || ''}`}
+                        value={`https://onfans.club/product/${product.id}/${influencer?.tracking_link || ''}`}
                         className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600 focus:outline-none"
                       />
                     </div>
