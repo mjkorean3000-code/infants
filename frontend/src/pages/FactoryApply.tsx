@@ -121,19 +121,19 @@ function FactoryApply() {
           <img src="/logo.png" alt="ONFANS" className="h-10 sm:h-12 object-contain" />
         </div>
         
-        <div className="flex items-center gap-3 sm:gap-6">
+        <div className="flex items-center gap-6 sm:gap-10">
+          <button 
+            onClick={() => navigate('/apply')}
+            className="text-[11px] sm:text-xs font-black text-white/40 hover:text-white transition-all uppercase tracking-widest"
+          >
+            Influencer Apply
+          </button>
           <button 
             onClick={() => navigate('/')}
-            className="text-sm font-black text-white/60 hover:text-white transition-all uppercase tracking-widest"
+            className="rounded-full bg-white/10 border border-white/10 px-6 py-2.5 text-xs sm:text-sm font-black text-white transition-all hover:bg-white hover:text-black active:scale-95"
           >
             Login
           </button>
-          <a 
-            href="tel:010-8452-3375" 
-            className="flex items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-xs sm:text-sm font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95"
-          >
-            전화 상담하기
-          </a>
         </div>
       </nav>
 
