@@ -118,7 +118,7 @@ function FactoryApply() {
     <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-6 py-8 sm:px-12">
         <div className="glass-light rounded-full px-6 py-2.5 flex items-center shadow-premium-lg">
-          <img src="/logo.png" alt="ONFANS" className="h-8 object-contain" />
+          <img src="/logo.png" alt="ONFANS" className="h-16 object-contain" />
         </div>
       </nav>
 

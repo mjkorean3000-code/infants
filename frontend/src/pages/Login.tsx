@@ -1,77 +1,41 @@
-import React, { useState } from 'react';
-import { supabase } from '../lib/supabase';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, AtSign, Lock, ShieldCheck } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { AtSign, Loader2 } from 'lucide-react';
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [loginId, setLoginId] = useState('');
+  const [instagramId, setInstagramId] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) navigate('/seller-dashboard');
+    };
+    checkUser();
+  }, [navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoggingIn(true);
     setError(null);
 
-    if (loginId === 'test@onfans.com' || loginId === '@test') {
-      setTimeout(() => {
-        setLoading(false);
-        localStorage.setItem('mock_auth', 'seller');
-        navigate('/dashboard');
-      }, 500);
-      return;
-    }
-
-    if (import.meta.env.VITE_SUPABASE_URL === undefined) {
-      setTimeout(() => {
-        setLoading(false);
-        if (loginId.includes('admin')) {
-          navigate('/admin');
-        } else {
-          navigate('/dashboard');
-        }
-      }, 500);
-      return;
-    }
-
     try {
-      const isEmail = loginId.includes('@') && loginId.includes('.');
+      const email = `${instagramId}@onfans.club`;
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      if (!isEmail) {
-        const cleanId = loginId.replace(/^@/, '').trim();
-        
-        const { data, error: fetchError } = await supabase
-          .from('influencers')
-          .select('*')
-          .or(`instagram_id.eq.${cleanId},instagram_id.eq.@${cleanId}`)
-          .eq('password', password)
-          .single();
-
-        if (fetchError || !data) {
-          throw new Error('인스타그램 아이디 또는 비밀번호가 일치하지 않거나 승인 대기 중입니다.');
-        }
-
-        localStorage.setItem('mock_auth', 'seller');
-        localStorage.setItem('seller_data', JSON.stringify(data));
-        navigate('/dashboard');
-        
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email: loginId, password });
-        if (error) throw error;
-        
-        localStorage.setItem('mock_auth', 'admin');
-        navigate('/admin');
-      }
+      if (error) throw error;
+      navigate('/seller-dashboard');
     } catch (err: any) {
-      if (err.message?.includes('Invalid login credentials')) {
-        setError('아이디 또는 비밀번호가 일치하지 않습니다.');
-      } else {
-        setError(err.message || '인증 과정에서 오류가 발생했습니다.');
-      }
+      setError(err.message || '로그인에 실패했습니다.');
     } finally {
-      setLoading(false);
+      setIsLoggingIn(false);
     }
   };
 
@@ -79,10 +43,11 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-surface-950 px-6 selection:bg-brand-500/30">
       <div className="w-full max-w-[480px] animate-fade-in">
         <div className="mb-12 text-center">
-          <div className="mx-auto mb-8 flex h-24 w-24 items-center justify-center rounded-[2rem] bg-white/5 border border-white/10 p-4 shadow-premium-xl">
+          {/* 자물쇠 아이콘을 제거하고 로고를 대폭 강조 */}
+          <div className="mx-auto mb-12 flex h-40 w-40 items-center justify-center rounded-[3rem] bg-white/5 border border-white/10 p-6 shadow-premium-2xl">
             <img src="/logo.png" alt="ONFANS" className="w-full h-full object-contain" />
           </div>
-          <p className="mt-4 text-lg font-medium text-surface-400">
+          <p className="mt-4 text-xl font-bold text-surface-400">
             파트너 대시보드 로그인
           </p>
         </div>
@@ -94,51 +59,45 @@ export default function Login() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <div className="group relative">
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-500 transition-colors group-focus-within:text-brand-500">
-                <AtSign size={20} />
+          <form onSubmit={handleLogin} className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2.5">
+              <label className="text-xs font-black text-surface-500 uppercase tracking-widest ml-1">Instagram ID</label>
+              <div className="relative">
+                <AtSign className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-500" size={18} />
+                <input 
+                  type="text" 
+                  required
+                  placeholder="아이디 입력"
+                  value={instagramId}
+                  onChange={(e) => setInstagramId(e.target.value)}
+                  className="w-full rounded-2xl border-2 border-white/5 bg-white/5 py-4 pl-12 pr-5 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
+                />
               </div>
-              <input
-                type="text"
-                value={loginId}
-                onChange={(e) => setLoginId(e.target.value)}
-                placeholder="인스타그램 아이디 (@id)"
-                required
-                className="w-full rounded-2xl border-2 border-white/5 bg-white/5 py-4 pl-14 pr-6 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-600"
-              />
             </div>
-            <div className="group relative">
-              <div className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-500 transition-colors group-focus-within:text-brand-500">
-                <Lock size={20} />
-              </div>
-              <input
-                type="password"
+
+            <div className="flex flex-col gap-2.5">
+              <label className="text-xs font-black text-surface-500 uppercase tracking-widest ml-1">Password</label>
+              <input 
+                type="password" 
+                required
+                placeholder="비밀번호 입력"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="비밀번호"
-                required
-                className="w-full rounded-2xl border-2 border-white/5 bg-white/5 py-4 pl-14 pr-6 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-600"
+                className="w-full rounded-2xl border-2 border-white/5 bg-white/5 px-6 py-4 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-white py-4 text-base font-black text-black shadow-premium-lg transition-all hover:bg-brand-500 hover:text-white active:scale-95 disabled:opacity-50"
+            <button 
+              type="submit" 
+              disabled={isLoggingIn}
+              className="mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-white py-5 text-lg font-black text-black transition-all hover:bg-brand-500 hover:text-white active:scale-95 shadow-premium-lg disabled:opacity-50"
             >
-              {loading ? <Loader2 size={24} className="animate-spin" /> : '로그인'}
+              {isLoggingIn ? <Loader2 className="animate-spin" /> : '로그인'}
             </button>
           </form>
-
-          <div className="mt-10 text-center">
-            <p className="text-sm font-medium text-surface-500">
-              계정이 없으신가요? <a href="/apply" className="text-brand-400 hover:text-brand-300 font-bold underline underline-offset-4">입점 신청하기</a>
-            </p>
-          </div>
         </div>
-        
-        <p className="mt-12 text-center text-xs font-bold text-surface-600 uppercase tracking-widest">
+
+        <p className="mt-10 text-center text-sm font-bold text-surface-600">
           &copy; 2026 ONFANS Platform. All rights reserved.
         </p>
       </div>
