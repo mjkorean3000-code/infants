@@ -122,7 +122,7 @@ export default function Checkout() {
 
           if (dbError) throw dbError;
 
-          // 2. Make.com 웹훅 전송 (주문용 웹훅 URL이 있을 경우)
+          // 2. Make.com 웹훅 전송
           const webhookUrl = import.meta.env.VITE_MAKE_WEBHOOK_URL;
           if (webhookUrl) {
             await fetch(webhookUrl, {
@@ -279,28 +279,43 @@ export default function Checkout() {
                 </div>
               </div>
 
-              {/* 동의 체크박스 영역 */}
+              {/* 동의 체크박스 영역 - 디자인 강화 */}
               <div className="mb-8 space-y-4">
                 <div 
                   onClick={() => setIsAgreedAll(!isAgreedAll)}
-                  className={`flex items-start gap-3 rounded-2xl p-4 border-2 transition-all cursor-pointer ${isAgreedAll ? 'border-brand-500 bg-brand-500/5' : 'border-white/5 bg-white/5 hover:border-white/10'}`}
+                  className={`flex items-start gap-3 rounded-2xl p-5 border-2 transition-all cursor-pointer ${
+                    isAgreedAll 
+                      ? 'border-brand-500 bg-brand-500/10 shadow-premium-sm' 
+                      : 'border-white/10 bg-white/5 hover:border-white/20'
+                  }`}
                 >
-                  <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isAgreedAll ? 'border-brand-500 bg-brand-500' : 'border-surface-600'}`}>
-                    {isAgreedAll && <CheckCircle2 size={14} className="text-white" />}
+                  <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all ${
+                    isAgreedAll ? 'border-brand-500 bg-brand-500 shadow-brand-500/50' : 'border-surface-600'
+                  }`}>
+                    {isAgreedAll && <CheckCircle2 size={16} className="text-white" />}
                   </div>
-                  <span className={`text-sm font-bold ${isAgreedAll ? 'text-brand-500' : 'text-surface-400'}`}>
-                    [필수] 주문 상품 정보 확인 및 온팬즈 이용약관, 개인정보 제3자 제공에 전체 동의합니다.
-                  </span>
+                  <div className="flex flex-col gap-1">
+                    <span className={`text-sm font-black leading-tight ${isAgreedAll ? 'text-white' : 'text-surface-400'}`}>
+                      [필수] 주문 상품 정보 확인 및 이용약관 전체 동의
+                    </span>
+                    <span className="text-[11px] font-bold text-brand-400 flex items-center gap-1">
+                      <ShieldCheck size={12} /> 개인정보 제3자 제공 동의 포함
+                    </span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-surface-600 leading-tight px-1 font-medium">
-                  개인정보 제3자 제공 안내: 원활한 배송 이행을 위해 수집된 배송지 정보를 해당 상품의 공급처(공장)에 위탁 제공함에 동의합니다.
-                </p>
+                
+                <div className="rounded-xl bg-white/5 p-4 border border-white/5">
+                  <p className="text-[10px] text-surface-500 leading-relaxed font-medium">
+                    <span className="text-surface-300 font-bold block mb-1">개인정보 제3자 제공 안내</span>
+                    원활한 배송 이행을 위해 수집된 배송지 정보를 해당 상품의 공급처(공장)에 위탁 제공함에 동의합니다.
+                  </p>
+                </div>
               </div>
 
               <button 
                 onClick={handlePayment}
                 disabled={isProcessing || !isAgreedAll}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-20 disabled:cursor-not-allowed"
               >
                 {isProcessing ? (
                   <Loader2 size={24} className="animate-spin" />
@@ -319,23 +334,29 @@ export default function Checkout() {
       </div>
 
       {/* 하단 고정 결제 버튼 (모바일 전용) */}
-      <div className="fixed bottom-0 left-0 z-50 w-full glass p-6 pb-10 shadow-premium-2xl lg:hidden animate-fade-in flex flex-col gap-4">
+      <div className="fixed bottom-0 left-0 z-50 w-full glass p-6 pb-10 shadow-premium-2xl lg:hidden animate-fade-in flex flex-col gap-5">
         <div 
           onClick={() => setIsAgreedAll(!isAgreedAll)}
-          className={`flex items-center gap-3 px-2 transition-all cursor-pointer`}
+          className={`flex items-center gap-4 px-3 py-4 rounded-2xl border-2 transition-all cursor-pointer ${
+            isAgreedAll ? 'border-brand-500 bg-brand-500/10' : 'border-white/10 bg-white/5'
+          }`}
         >
-          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isAgreedAll ? 'border-brand-500 bg-brand-500' : 'border-surface-600'}`}>
-            {isAgreedAll && <CheckCircle2 size={14} className="text-white" />}
+          <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all ${
+            isAgreedAll ? 'border-brand-500 bg-brand-500' : 'border-surface-600'
+          }`}>
+            {isAgreedAll && <CheckCircle2 size={16} className="text-white" />}
           </div>
-          <span className={`text-xs font-bold ${isAgreedAll ? 'text-brand-500' : 'text-surface-400'}`}>
-            [필수] 약관 및 제3자 제공 전체 동의
-          </span>
+          <div className="flex flex-col">
+            <span className={`text-xs font-black ${isAgreedAll ? 'text-white' : 'text-surface-400'}`}>
+              [필수] 약관 및 제3자 제공 전체 동의
+            </span>
+          </div>
         </div>
         
         <button 
           onClick={handlePayment}
           disabled={isProcessing || !isAgreedAll}
-          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-30"
+          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-20"
         >
           {isProcessing ? (
             <Loader2 size={24} className="animate-spin" />
