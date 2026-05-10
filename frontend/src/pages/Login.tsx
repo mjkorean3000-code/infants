@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, User, Lock, ShieldCheck } from 'lucide-react';
+import { Loader2, AtSign, Lock, ShieldCheck } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -98,13 +98,13 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="group relative">
               <div className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-500 transition-colors group-focus-within:text-brand-500">
-                <User size={20} />
+                <AtSign size={20} />
               </div>
               <input
                 type="text"
                 value={loginId}
                 onChange={(e) => setLoginId(e.target.value)}
-                placeholder="인스타그램 ID 또는 이메일"
+                placeholder="인스타그램 아이디 (@id)"
                 required
                 className="w-full rounded-2xl border-2 border-white/5 bg-white/5 py-4 pl-14 pr-6 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-600"
               />
