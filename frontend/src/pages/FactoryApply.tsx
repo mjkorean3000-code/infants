@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Package, CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck, Truck, MessageSquare, Ban, CreditCard } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck, Truck, MessageSquare, Ban, CreditCard } from 'lucide-react';
 
 function FactoryApply() {
   const [step, setStep] = useState<1 | 2>(1);
