@@ -68,7 +68,12 @@ function PartnerApply() {
             email: formData.email,
             category: formData.category,
             status: 'pending',
-            ...extraData
+            ...extraData,
+            agree_ads_law: agreements.ads_law,
+            agree_tax_info: agreements.tax_info,
+            agree_no_direct_trade: agreements.no_direct_trade,
+            agree_disclaimer: agreements.disclaimer,
+            agree_ops_guide: agreements.ops_guide
           }
         ]);
 

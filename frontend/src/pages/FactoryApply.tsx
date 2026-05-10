@@ -84,7 +84,12 @@ function FactoryApply() {
             consumer_price: parseFloat(formData.consumer_price),
             supply_price: parseFloat(formData.supply_price),
             status: 'pending',
-            ...extraData
+            ...extraData,
+            agree_personal_info: agreements.personal_info,
+            agree_logistics: agreements.logistics,
+            agree_cs_quality: agreements.cs_quality,
+            agree_no_direct_trade: agreements.no_direct_trade,
+            agree_auto_settlement: agreements.auto_settlement
           }
         ]);
 
