@@ -42,7 +42,6 @@ export default function Checkout() {
       return;
     }
 
-    // Fetch User IP
     fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
       .then(data => setUserIp(data.ip))
@@ -69,10 +68,7 @@ export default function Checkout() {
       return;
     }
 
-    if (!window.IMP) {
-      alert('결제 모듈을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
-      return;
-    }
+    setIsProcessing(true);
 
     const data = {
       pg: 'html5_inicis',
@@ -85,8 +81,6 @@ export default function Checkout() {
       buyer_addr: formData.shipping_address,
     };
 
-    setIsProcessing(true);
-
     window.IMP.request_pay(data, async (rsp: any) => {
       if (rsp.success) {
         try {
@@ -97,15 +91,6 @@ export default function Checkout() {
             consent_type: 'buyer_terms_v1.0'
           };
 
-          if (import.meta.env.VITE_SUPABASE_URL === undefined) {
-            setTimeout(() => {
-              setIsProcessing(false);
-              setIsSuccess(true);
-            }, 1000);
-            return;
-          }
-
-          // 1. Supabase 주문 저장
           const { error: dbError } = await supabase
             .from('orders')
             .insert([{
@@ -121,26 +106,10 @@ export default function Checkout() {
             }]);
 
           if (dbError) throw dbError;
-
-          // 2. Make.com 웹훅 전송
-          const webhookUrl = import.meta.env.VITE_MAKE_WEBHOOK_URL;
-          if (webhookUrl) {
-            await fetch(webhookUrl, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 
-                event: 'new_order',
-                ...orderData, 
-                ...formData, 
-                ...extraData 
-              })
-            }).catch(err => console.error('Webhook error:', err));
-          }
-          
           setIsSuccess(true);
         } catch (error) {
           console.error('Error saving order:', error);
-          alert('결제는 완료되었으나 주문 저장 중 오류가 발생했습니다. 고객센터로 문의해주세요.');
+          alert('결제는 완료되었으나 주문 저장 중 오류가 발생했습니다.');
         } finally {
           setIsProcessing(false);
         }
@@ -156,21 +125,15 @@ export default function Checkout() {
   if (isSuccess) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-surface-950 px-6 animate-fade-in">
-        <div className="flex flex-col items-center rounded-[2.5rem] glass p-12 text-center shadow-premium-2xl max-w-[500px] w-full border-white/5">
+        <div className="flex flex-col items-center rounded-[2.5rem] glass p-10 text-center shadow-premium-2xl max-w-[500px] w-full border-white/5">
           <div className="mb-8 rounded-full bg-green-500/10 border border-green-500/20 p-6 shadow-premium-lg">
-            <CheckCircle2 size={64} className="text-green-400" />
+            <CheckCircle2 size={56} className="text-green-400" />
           </div>
-          <h2 className="mb-4 text-3xl font-black text-white tracking-tight">주문이 완료되었습니다!</h2>
-          <p className="mb-10 text-surface-400 font-medium leading-relaxed">주문하신 상품이 안전하게 배송될 예정입니다.<br/>이용해주셔서 감사합니다.</p>
-          
-          <div className="w-full rounded-2xl bg-white/5 border border-white/5 p-6 mb-10 text-left">
-            <p className="text-xs font-black text-surface-500 uppercase tracking-widest mb-2">Final Payment</p>
-            <p className="text-3xl font-black text-white">{orderData.total_amount.toLocaleString()}원</p>
-          </div>
-
+          <h2 className="mb-4 text-3xl font-black text-white">주문 완료!</h2>
+          <p className="mb-10 text-surface-400 font-medium">안전하게 배송해 드리겠습니다.</p>
           <button 
             onClick={() => navigate('/')}
-            className="w-full rounded-2xl bg-white py-5 text-base font-black text-black transition-all hover:bg-brand-500 hover:text-white active:scale-95 shadow-premium-lg"
+            className="w-full rounded-2xl bg-white py-5 font-black text-black shadow-premium-lg"
           >
             홈으로 돌아가기
           </button>
@@ -180,193 +143,151 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white pb-32 lg:py-12">
+    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white pb-40 lg:py-12">
       <div className="mx-auto max-w-4xl lg:px-12">
-        <header className="mb-10 flex items-center gap-4 px-6 lg:px-0 animate-fade-in-up">
+        <header className="fixed top-0 left-0 right-0 z-50 flex items-center gap-4 bg-surface-950/80 backdrop-blur-xl px-6 py-5 lg:static lg:bg-transparent lg:px-0 lg:py-0 lg:mb-10 animate-fade-in">
           <button onClick={() => navigate(-1)} className="rounded-xl glass p-2 text-surface-400 hover:text-white transition-all">
             <ChevronLeft size={24} />
           </button>
-          <h1 className="text-2xl font-black text-white tracking-tight">주문 및 결제</h1>
+          <h1 className="text-xl font-black text-white tracking-tight lg:text-2xl">주문 및 결제</h1>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-          <div className="lg:col-span-3 flex flex-col gap-10 px-6 lg:px-0">
-            {/* 주문 상품 요약 */}
-            <section className="rounded-[2rem] glass p-8 shadow-premium-lg border-white/5 animate-fade-in-up delay-100">
-              <div className="flex items-center gap-3 mb-6">
-                <Package size={20} className="text-brand-400" />
-                <h2 className="text-sm font-black text-surface-300 uppercase tracking-widest">Order Summary</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-24 lg:mt-0">
+          <div className="lg:col-span-3 flex flex-col gap-6 px-4 lg:px-0">
+            {/* 주문 상품 요약 - 모바일 압축 */}
+            <section className="rounded-3xl glass p-6 shadow-premium-lg border-white/5">
+              <div className="flex items-center gap-3 mb-4">
+                <Package size={18} className="text-brand-400" />
+                <h2 className="text-xs font-black text-surface-300 uppercase tracking-widest">Order Summary</h2>
               </div>
-              <div className="flex flex-col gap-2">
-                <span className="text-xl font-black text-white">{orderData.product_name}</span>
-                <span className="text-sm font-medium text-surface-500">
-                  옵션: {orderData.selected_color} / {orderData.selected_size} | 수량: {orderData.quantity}개
+              <div className="flex flex-col gap-1">
+                <span className="text-lg font-black text-white">{orderData.product_name}</span>
+                <span className="text-sm font-bold text-surface-500">
+                  {orderData.selected_color} / {orderData.selected_size} | {orderData.quantity}개
                 </span>
                 <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-4">
-                  <span className="text-sm font-bold text-surface-500">상품 금액</span>
-                  <span className="text-xl font-black text-white">{orderData.total_amount.toLocaleString()}원</span>
+                  <span className="text-sm font-bold text-surface-500">총 금액</span>
+                  <span className="text-xl font-black text-brand-400">{orderData.total_amount.toLocaleString()}원</span>
                 </div>
               </div>
             </section>
 
-            {/* 배송 정보 입력 */}
-            <section className="rounded-[2rem] glass p-10 shadow-premium-lg border-white/5 animate-fade-in-up delay-200">
-              <div className="flex items-center gap-3 mb-8">
-                <Truck size={20} className="text-brand-400" />
-                <h2 className="text-sm font-black text-surface-300 uppercase tracking-widest">Shipping Info</h2>
+            {/* 배송 정보 - 모바일 터치 최적화 */}
+            <section className="rounded-3xl glass p-6 lg:p-8 shadow-premium-lg border-white/5">
+              <div className="flex items-center gap-3 mb-6">
+                <Truck size={18} className="text-brand-400" />
+                <h2 className="text-xs font-black text-surface-300 uppercase tracking-widest">Shipping Info</h2>
               </div>
-              <div className="flex flex-col gap-8">
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="customer_name" className="text-xs font-black text-surface-500 uppercase tracking-widest flex items-center gap-2">
-                    <User size={14} /> 받으시는 분
-                  </label>
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-black text-surface-500 uppercase tracking-widest ml-1">받으시는 분</label>
                   <input 
                     type="text" 
-                    id="customer_name" 
                     name="customer_name" 
                     value={formData.customer_name}
                     onChange={handleChange}
                     placeholder="이름 입력"
-                    className="rounded-2xl border-2 border-white/5 bg-white/5 px-6 py-4 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
+                    className="rounded-2xl border-2 border-white/5 bg-white/5 px-5 py-4 font-bold text-white focus:border-brand-500 focus:outline-none"
                   />
                 </div>
                 
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="customer_contact" className="text-xs font-black text-surface-500 uppercase tracking-widest">연락처</label>
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-black text-surface-500 uppercase tracking-widest ml-1">연락처</label>
                   <input 
                     type="tel" 
-                    id="customer_contact" 
                     name="customer_contact" 
                     value={formData.customer_contact}
                     onChange={handleChange}
                     placeholder="010-0000-0000"
-                    className="rounded-2xl border-2 border-white/5 bg-white/5 px-6 py-4 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
+                    className="rounded-2xl border-2 border-white/5 bg-white/5 px-5 py-4 font-bold text-white focus:border-brand-500 focus:outline-none"
                   />
                 </div>
 
-                <div className="flex flex-col gap-3">
-                  <label htmlFor="shipping_address" className="text-xs font-black text-surface-500 uppercase tracking-widest">배송 주소</label>
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-black text-surface-500 uppercase tracking-widest ml-1">배송 주소</label>
                   <input 
                     type="text" 
-                    id="shipping_address" 
                     name="shipping_address" 
                     value={formData.shipping_address}
                     onChange={handleChange}
-                    placeholder="정확한 배송지를 입력해주세요"
-                    className="rounded-2xl border-2 border-white/5 bg-white/5 px-6 py-4 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
+                    placeholder="정확한 주소 입력"
+                    className="rounded-2xl border-2 border-white/5 bg-white/5 px-5 py-4 font-bold text-white focus:border-brand-500 focus:outline-none"
                   />
                 </div>
               </div>
             </section>
           </div>
 
-          <div className="lg:col-span-2 px-6 lg:px-0">
-            <div className="sticky top-12 rounded-[2rem] glass p-10 shadow-premium-2xl border-white/5 animate-fade-in-up delay-300">
-              <h2 className="text-sm font-black text-surface-500 uppercase tracking-widest mb-8">Payment Details</h2>
+          <div className="lg:col-span-2 px-4 lg:px-0 mb-32 lg:mb-0">
+            <div className="sticky top-10 rounded-3xl glass p-8 shadow-premium-2xl border-white/5">
+              <h2 className="text-[10px] font-black text-surface-500 uppercase tracking-widest mb-6">Payment Details</h2>
               
-              <div className="space-y-4 mb-8">
-                <div className="flex justify-between text-surface-400 font-medium">
-                  <span>총 상품 금액</span>
+              <div className="space-y-3 mb-8">
+                <div className="flex justify-between text-sm text-surface-400 font-bold">
+                  <span>상품 합계</span>
                   <span>{orderData.total_amount.toLocaleString()}원</span>
                 </div>
-                <div className="flex justify-between text-surface-400 font-medium">
+                <div className="flex justify-between text-sm text-surface-400 font-bold">
                   <span>배송비</span>
                   <span className="text-brand-400">무료</span>
                 </div>
                 <div className="pt-4 border-t border-white/5 flex justify-between items-end">
-                  <span className="font-black text-white text-lg tracking-tight">최종 결제 금액</span>
+                  <span className="font-black text-white text-base">최종 결제</span>
                   <span className="font-black text-brand-400 text-3xl">{orderData.total_amount.toLocaleString()}원</span>
                 </div>
               </div>
 
-              {/* 동의 체크박스 영역 - 디자인 강화 */}
+              {/* 동의 영역 - 모바일 맞춤형 */}
               <div className="mb-8 space-y-4">
                 <div 
                   onClick={() => setIsAgreedAll(!isAgreedAll)}
-                  className={`flex items-start gap-3 rounded-2xl p-5 border-2 transition-all cursor-pointer ${
-                    isAgreedAll 
-                      ? 'border-brand-500 bg-brand-500/10 shadow-premium-sm' 
-                      : 'border-white/10 bg-white/5 hover:border-white/20'
+                  className={`flex items-start gap-3 rounded-2xl p-4 border-2 transition-all cursor-pointer ${
+                    isAgreedAll ? 'border-brand-500 bg-brand-500/10' : 'border-white/5 bg-white/5'
                   }`}
                 >
-                  <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all ${
-                    isAgreedAll ? 'border-brand-500 bg-brand-500 shadow-brand-500/50' : 'border-surface-600'
+                  <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border-2 transition-all ${
+                    isAgreedAll ? 'border-brand-500 bg-brand-500' : 'border-surface-600'
                   }`}>
-                    {isAgreedAll && <CheckCircle2 size={16} className="text-white" />}
+                    {isAgreedAll && <CheckCircle2 size={14} className="text-white" />}
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <span className={`text-sm font-black leading-tight ${isAgreedAll ? 'text-white' : 'text-surface-400'}`}>
-                      [필수] 주문 상품 정보 확인 및 이용약관 전체 동의
-                    </span>
-                    <span className="text-[11px] font-bold text-brand-400 flex items-center gap-1">
-                      <ShieldCheck size={12} /> 개인정보 제3자 제공 동의 포함
-                    </span>
-                  </div>
+                  <span className={`text-xs font-black leading-tight ${isAgreedAll ? 'text-white' : 'text-surface-400'}`}>
+                    [필수] 주문 정보 및 약관 전체 동의
+                  </span>
                 </div>
-                
-                <div className="rounded-xl bg-white/5 p-4 border border-white/5">
-                  <p className="text-[10px] text-surface-500 leading-relaxed font-medium">
-                    <span className="text-surface-300 font-bold block mb-1">개인정보 제3자 제공 안내</span>
-                    원활한 배송 이행을 위해 수집된 배송지 정보를 해당 상품의 공급처(공장)에 위탁 제공함에 동의합니다.
-                  </p>
-                </div>
+                <p className="text-[9px] text-surface-600 leading-normal px-1">
+                  원활한 배송을 위해 정보를 상품 공급처에 위탁 제공함에 동의합니다.
+                </p>
               </div>
 
               <button 
                 onClick={handlePayment}
                 disabled={isProcessing || !isAgreedAll}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-20 disabled:cursor-not-allowed"
+                className="hidden lg:flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white transition-all disabled:opacity-20 shadow-premium-lg"
               >
-                {isProcessing ? (
-                  <Loader2 size={24} className="animate-spin" />
-                ) : (
-                  <CreditCard size={24} />
-                )}
+                {isProcessing ? <Loader2 className="animate-spin" /> : <CreditCard size={20} />}
                 결제하기
               </button>
-              
-              <p className="mt-6 text-[10px] text-center font-bold text-surface-600 uppercase tracking-widest">
-                Safe & Secure Checkout via PortOne
-              </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 하단 고정 결제 버튼 (모바일 전용) */}
-      <div className="fixed bottom-0 left-0 z-50 w-full glass p-6 pb-10 shadow-premium-2xl lg:hidden animate-fade-in flex flex-col gap-5">
-        <div 
-          onClick={() => setIsAgreedAll(!isAgreedAll)}
-          className={`flex items-center gap-4 px-3 py-4 rounded-2xl border-2 transition-all cursor-pointer ${
-            isAgreedAll ? 'border-brand-500 bg-brand-500/10' : 'border-white/10 bg-white/5'
-          }`}
-        >
-          <div className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all ${
-            isAgreedAll ? 'border-brand-500 bg-brand-500' : 'border-surface-600'
-          }`}>
-            {isAgreedAll && <CheckCircle2 size={16} className="text-white" />}
+      {/* 하단 고정 버튼 - 모바일 전용 디자인 */}
+      <div className="fixed bottom-0 left-0 z-50 w-full glass p-5 pb-8 shadow-premium-2xl lg:hidden flex flex-col gap-4">
+        {!isAgreedAll && (
+          <div className="text-[10px] text-center font-bold text-brand-400 animate-pulse">
+            약관 동의가 필요합니다
           </div>
-          <div className="flex flex-col">
-            <span className={`text-xs font-black ${isAgreedAll ? 'text-white' : 'text-surface-400'}`}>
-              [필수] 약관 및 제3자 제공 전체 동의
-            </span>
-          </div>
-        </div>
-        
+        )}
         <button 
           onClick={handlePayment}
           disabled={isProcessing || !isAgreedAll}
-          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-20"
+          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all active:scale-95 disabled:opacity-20"
         >
-          {isProcessing ? (
-            <Loader2 size={24} className="animate-spin" />
-          ) : (
-            <CreditCard size={24} />
-          )}
+          {isProcessing ? <Loader2 className="animate-spin" /> : <CreditCard size={20} />}
           {orderData.total_amount.toLocaleString()}원 결제하기
         </button>
       </div>
-
     </div>
   );
 }

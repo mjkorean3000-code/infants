@@ -101,9 +101,24 @@ function PartnerApply() {
 
   return (
     <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-6 py-8 sm:px-12">
-        <div className="glass-light rounded-full px-6 py-2.5 flex items-center shadow-premium-lg">
-          <img src="/logo.png" alt="ONFANS" className="h-16 object-contain" />
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 sm:px-12 backdrop-blur-md bg-surface-950/20">
+        <div className="glass-light rounded-full px-5 py-2 flex items-center shadow-premium-lg">
+          <img src="/logo.png" alt="ONFANS" className="h-10 sm:h-12 object-contain" />
+        </div>
+        
+        <div className="flex items-center gap-3 sm:gap-6">
+          <button 
+            onClick={() => navigate('/factory-apply')}
+            className="hidden sm:block text-sm font-black text-white/60 hover:text-white transition-all uppercase tracking-widest"
+          >
+            Factory Apply
+          </button>
+          <a 
+            href="tel:010-8452-3375" 
+            className="flex items-center gap-2 rounded-full bg-brand-500 px-5 py-2.5 text-xs sm:text-sm font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95"
+          >
+            전화 상담하기
+          </a>
         </div>
       </nav>
 
