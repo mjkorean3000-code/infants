@@ -72,7 +72,6 @@ function FactoryApply() {
     }
 
     try {
-      // 1. Supabase 저장
       const { error: dbError } = await supabase
         .from('factory_applications')
         .insert([
@@ -90,17 +89,6 @@ function FactoryApply() {
         ]);
 
       if (dbError) throw dbError;
-
-      // 2. Make.com 웹훅 전송 (URL이 설정되어 있을 경우)
-      const webhookUrl = import.meta.env.VITE_MAKE_WEBHOOK_URL;
-      if (webhookUrl) {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...formData, ...extraData, type: 'factory_apply' })
-        }).catch(err => console.error('Webhook error:', err));
-      }
-
       setIsSuccess(true);
     } catch (error: any) {
       console.error('Error submitting application:', error);
