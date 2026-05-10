@@ -79,10 +79,9 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-surface-950 px-6 selection:bg-brand-500/30">
       <div className="w-full max-w-[480px] animate-fade-in">
         <div className="mb-12 text-center">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-[1.5rem] bg-brand-500 shadow-premium-lg">
-            <ShieldCheck size={32} className="text-white" />
+          <div className="mx-auto mb-8 flex h-24 w-24 items-center justify-center rounded-[2rem] bg-white/5 border border-white/10 p-4 shadow-premium-xl">
+            <img src="/logo.png" alt="ONFANS" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-4xl font-black tracking-tighter text-white sm:text-5xl">ONFANS</h1>
           <p className="mt-4 text-lg font-medium text-surface-400">
             파트너 대시보드 로그인
           </p>
