@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { CreditCard, CheckCircle2, ChevronLeft, Loader2, Package, Truck, User } from 'lucide-react';
+import { CreditCard, CheckCircle2, ChevronLeft, Loader2, Package, Truck, User, ShieldCheck } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -30,6 +30,8 @@ export default function Checkout() {
     shipping_address: ''
   });
   
+  const [userIp, setUserIp] = useState('');
+  const [isAgreedAll, setIsAgreedAll] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -39,6 +41,12 @@ export default function Checkout() {
       navigate('/');
       return;
     }
+
+    // Fetch User IP
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => setUserIp(data.ip))
+      .catch(() => setUserIp('unknown'));
 
     if (window.IMP) {
       window.IMP.init('imp00000000'); 
@@ -53,6 +61,11 @@ export default function Checkout() {
   const handlePayment = () => {
     if (!formData.customer_name || !formData.customer_contact || !formData.shipping_address) {
       alert('배송 정보를 모두 입력해주세요.');
+      return;
+    }
+
+    if (!isAgreedAll) {
+      alert('주문 정보 확인 및 약관에 동의하셔야 결제가 가능합니다.');
       return;
     }
 
@@ -77,6 +90,13 @@ export default function Checkout() {
     window.IMP.request_pay(data, async (rsp: any) => {
       if (rsp.success) {
         try {
+          const extraData = {
+            is_agreed_all: true,
+            agreed_at: new Date().toISOString(),
+            user_ip: userIp,
+            consent_type: 'buyer_terms_v1.0'
+          };
+
           if (import.meta.env.VITE_SUPABASE_URL === undefined) {
             setTimeout(() => {
               setIsProcessing(false);
@@ -85,7 +105,8 @@ export default function Checkout() {
             return;
           }
 
-          const { error } = await supabase
+          // 1. Supabase 주문 저장
+          const { error: dbError } = await supabase
             .from('orders')
             .insert([{
               product_id: orderData.product_id,
@@ -95,10 +116,26 @@ export default function Checkout() {
               shipping_address: formData.shipping_address,
               quantity: orderData.quantity,
               total_amount: orderData.total_amount,
-              status: 'paid'
+              status: 'paid',
+              ...extraData
             }]);
 
-          if (error) throw error;
+          if (dbError) throw dbError;
+
+          // 2. Make.com 웹훅 전송 (주문용 웹훅 URL이 있을 경우)
+          const webhookUrl = import.meta.env.VITE_MAKE_WEBHOOK_URL;
+          if (webhookUrl) {
+            await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                event: 'new_order',
+                ...orderData, 
+                ...formData, 
+                ...extraData 
+              })
+            }).catch(err => console.error('Webhook error:', err));
+          }
           
           setIsSuccess(true);
         } catch (error) {
@@ -242,10 +279,28 @@ export default function Checkout() {
                 </div>
               </div>
 
+              {/* 동의 체크박스 영역 */}
+              <div className="mb-8 space-y-4">
+                <div 
+                  onClick={() => setIsAgreedAll(!isAgreedAll)}
+                  className={`flex items-start gap-3 rounded-2xl p-4 border-2 transition-all cursor-pointer ${isAgreedAll ? 'border-brand-500 bg-brand-500/5' : 'border-white/5 bg-white/5 hover:border-white/10'}`}
+                >
+                  <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isAgreedAll ? 'border-brand-500 bg-brand-500' : 'border-surface-600'}`}>
+                    {isAgreedAll && <CheckCircle2 size={14} className="text-white" />}
+                  </div>
+                  <span className={`text-sm font-bold ${isAgreedAll ? 'text-brand-500' : 'text-surface-400'}`}>
+                    [필수] 주문 상품 정보 확인 및 온팬즈 이용약관, 개인정보 제3자 제공에 전체 동의합니다.
+                  </span>
+                </div>
+                <p className="text-[10px] text-surface-600 leading-tight px-1 font-medium">
+                  개인정보 제3자 제공 안내: 원활한 배송 이행을 위해 수집된 배송지 정보를 해당 상품의 공급처(공장)에 위탁 제공함에 동의합니다.
+                </p>
+              </div>
+
               <button 
                 onClick={handlePayment}
-                disabled={isProcessing}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-70"
+                disabled={isProcessing || !isAgreedAll}
+                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
               >
                 {isProcessing ? (
                   <Loader2 size={24} className="animate-spin" />
@@ -264,11 +319,23 @@ export default function Checkout() {
       </div>
 
       {/* 하단 고정 결제 버튼 (모바일 전용) */}
-      <div className="fixed bottom-0 left-0 z-50 w-full glass p-6 pb-10 shadow-premium-2xl lg:hidden animate-fade-in">
+      <div className="fixed bottom-0 left-0 z-50 w-full glass p-6 pb-10 shadow-premium-2xl lg:hidden animate-fade-in flex flex-col gap-4">
+        <div 
+          onClick={() => setIsAgreedAll(!isAgreedAll)}
+          className={`flex items-center gap-3 px-2 transition-all cursor-pointer`}
+        >
+          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isAgreedAll ? 'border-brand-500 bg-brand-500' : 'border-surface-600'}`}>
+            {isAgreedAll && <CheckCircle2 size={14} className="text-white" />}
+          </div>
+          <span className={`text-xs font-bold ${isAgreedAll ? 'text-brand-500' : 'text-surface-400'}`}>
+            [필수] 약관 및 제3자 제공 전체 동의
+          </span>
+        </div>
+        
         <button 
           onClick={handlePayment}
-          disabled={isProcessing}
-          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-70"
+          disabled={isProcessing || !isAgreedAll}
+          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-brand-500 py-5 text-lg font-black text-white shadow-premium-lg transition-all hover:bg-brand-600 active:scale-95 disabled:opacity-30"
         >
           {isProcessing ? (
             <Loader2 size={24} className="animate-spin" />
