@@ -243,17 +243,18 @@ function FactoryApply() {
               
               <div className="space-y-6">
                 <div className="flex flex-col gap-2.5">
-                  <label htmlFor="company_name" className="text-sm font-bold text-surface-900 ml-1">업체명 (또는 브랜드명)</label>
+                  <label htmlFor="company_name" className="text-sm font-bold text-surface-900 ml-1">상품명</label>
                   <input 
                     type="text" 
                     id="company_name" 
                     name="company_name" 
                     required
-                    placeholder="예: 온팬즈 패션"
+                    placeholder="예: 프리미엄 린넨 셔츠"
                     value={formData.company_name}
                     onChange={handleChange}
                     className="w-full rounded-2xl border-2 border-surface-100 bg-surface-50 px-5 py-4 font-bold text-surface-950 transition-all focus:border-surface-950 focus:bg-white focus:outline-none placeholder:text-surface-300"
                   />
+                  <span className="text-[11px] text-surface-400 ml-1 font-medium italic">제안하시는 대표 상품의 이름을 입력해주세요.</span>
                 </div>
 
                 <div className="flex flex-col gap-2.5">
