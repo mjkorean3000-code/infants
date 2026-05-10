@@ -60,7 +60,8 @@ function PartnerApply() {
     }
 
     try {
-      const { error } = await supabase
+      // 1. Supabase 저장
+      const { error: dbError } = await supabase
         .from('influencers')
         .insert([
           {
@@ -68,11 +69,22 @@ function PartnerApply() {
             email: formData.email,
             category: formData.category,
             status: 'pending',
-            ...extraData // 추가 데이터 포함
+            ...extraData
           }
         ]);
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      // 2. Make.com 웹훅 전송
+      const webhookUrl = import.meta.env.VITE_MAKE_WEBHOOK_URL;
+      if (webhookUrl) {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...formData, ...extraData, type: 'influencer_apply' })
+        }).catch(err => console.error('Webhook error:', err));
+      }
+
       setIsSuccess(true);
     } catch (error) {
       console.error('Error submitting application:', error);
