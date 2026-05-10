@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck, Truck, MessageSquare, Ban, CreditCard } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck } from 'lucide-react';
 
 function FactoryApply() {
   const [step, setStep] = useState<1 | 2>(1);
@@ -16,14 +16,7 @@ function FactoryApply() {
     supply_price: ''
   });
 
-  const [agreements, setAgreements] = useState({
-    personal_info: false,
-    logistics: false,
-    cs_quality: false,
-    no_direct_trade: false,
-    auto_settlement: false
-  });
-  
+  const [isAgreed, setIsAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -35,22 +28,16 @@ function FactoryApply() {
       .catch(() => setUserIp('unknown'));
   }, []);
 
-  const allAgreed = Object.values(agreements).every(v => v === true);
-
   const handleNextStep = () => {
     if (isDropshipping === true) {
       setStep(2);
     }
   };
 
-  const handleAgreementChange = (key: keyof typeof agreements) => {
-    setAgreements(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!allAgreed) {
-      alert('모든 필수 항목에 동의해야 신청이 가능합니다.');
+    if (!isAgreed) {
+      alert('필수 약관에 동의해야 신청이 가능합니다.');
       return;
     }
     setIsSubmitting(true);
@@ -64,7 +51,6 @@ function FactoryApply() {
 
     if (import.meta.env.VITE_SUPABASE_URL === undefined) {
       setTimeout(() => {
-        console.log('Final Data to Make/Supabase:', { ...formData, ...extraData });
         setIsSubmitting(false);
         setIsSuccess(true);
       }, 1500);
@@ -85,11 +71,12 @@ function FactoryApply() {
             supply_price: parseFloat(formData.supply_price),
             status: 'pending',
             ...extraData,
-            agree_personal_info: agreements.personal_info,
-            agree_logistics: agreements.logistics,
-            agree_cs_quality: agreements.cs_quality,
-            agree_no_direct_trade: agreements.no_direct_trade,
-            agree_auto_settlement: agreements.auto_settlement
+            // 개별 항목도 호환성을 위해 true로 전송
+            agree_personal_info: true,
+            agree_logistics: true,
+            agree_cs_quality: true,
+            agree_no_direct_trade: true,
+            agree_auto_settlement: true
           }
         ]);
 
@@ -339,37 +326,36 @@ function FactoryApply() {
 
                 <div className="mt-10 space-y-4">
                   <h4 className="text-xs font-black text-surface-500 uppercase tracking-widest flex items-center gap-2">
-                    <ShieldCheck size={14} /> 필수 동의 사항
+                    <ShieldCheck size={14} /> 이용약관 및 동의
                   </h4>
-                  <div className="flex flex-col gap-3">
-                    {[
-                      { id: 'personal_info', icon: <ShieldCheck size={16} />, label: '[필수] 개인정보 처리 위수탁 동의', sub: '배송 목적의 고객 정보 안전 취급 동의' },
-                      { id: 'logistics', icon: <Truck size={16} />, label: '[필수] 물류 이행 규정 준수', sub: '24시간 이내 송장 등록 및 드롭쉬핑 이행 동의' },
-                      { id: 'cs_quality', icon: <MessageSquare size={16} />, label: '[필수] CS 및 품질 책임', sub: '제품 하자 시 교환/환불 비용 부담 및 응대 동의' },
-                      { id: 'no_direct_trade', icon: <Ban size={16} />, label: '[필수] 직거래 금지 및 위약 동의', sub: '시스템 우회 거래 금지 및 위반 시 책임 동의' },
-                      { id: 'auto_settlement', icon: <CreditCard size={16} />, label: '[필수] 자동 정산 방식 수용', sub: '시스템 자동 산출 정산 로직 및 일정 동의' }
-                    ].map((item) => (
-                      <div 
-                        key={item.id} 
-                        onClick={() => handleAgreementChange(item.id as keyof typeof agreements)}
-                        className={`flex items-start gap-3 rounded-2xl p-4 border-2 transition-all cursor-pointer ${agreements[item.id as keyof typeof agreements] ? 'border-brand-500 bg-brand-500/5' : 'border-surface-100 bg-surface-50 hover:border-surface-200'}`}
-                      >
-                        <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${agreements[item.id as keyof typeof agreements] ? 'border-brand-500 bg-brand-500' : 'border-surface-300'}`}>
-                          {agreements[item.id as keyof typeof agreements] && <CheckCircle2 size={14} className="text-white" />}
-                        </div>
-                        <div className="flex flex-col gap-0.5">
-                          <span className={`text-sm font-bold ${agreements[item.id as keyof typeof agreements] ? 'text-brand-500' : 'text-surface-900'}`}>{item.label}</span>
-                          <span className="text-[11px] font-medium text-surface-500">{item.sub}</span>
-                        </div>
-                      </div>
-                    ))}
+                  
+                  <div className="rounded-2xl border-2 border-surface-100 bg-surface-50 p-4">
+                    <div className="h-32 overflow-y-auto pr-2 text-[11px] font-medium text-surface-600 leading-relaxed scrollbar-thin scrollbar-thumb-surface-200">
+                      본인은 아래의 모든 운영 규정에 동의합니다.<br /><br />
+                      개인정보 위수탁: 배송 목적의 고객 정보 안전 취급 및 파기<br />
+                      물류 및 CS: 24시간 이내 송장 등록(드롭쉬핑) 및 제품 하자 시 교환/환불 책임 부담<br />
+                      거래 질서: 플랫폼 우회 직거래 금지 및 위반 시 영구 제명<br />
+                      정산: 시스템 자동 산출 로직에 따른 대금 정산 수용
+                    </div>
+                  </div>
+
+                  <div 
+                    onClick={() => setIsAgreed(!isAgreed)}
+                    className={`flex items-start gap-3 rounded-2xl p-5 border-2 transition-all cursor-pointer ${isAgreed ? 'border-brand-500 bg-brand-500/5' : 'border-surface-100 bg-surface-50 hover:border-surface-200'}`}
+                  >
+                    <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isAgreed ? 'border-brand-500 bg-brand-500' : 'border-surface-300'}`}>
+                      {isAgreed && <CheckCircle2 size={14} className="text-white" />}
+                    </div>
+                    <span className={`text-sm font-bold ${isAgreed ? 'text-brand-500' : 'text-surface-900'}`}>
+                      [필수] 온팬즈 파트너 입점 약관 및 개인정보 처리 위탁 전체 동의
+                    </span>
                   </div>
                 </div>
               </div>
 
               <button 
                 type="submit" 
-                disabled={isSubmitting || !allAgreed}
+                disabled={isSubmitting || !isAgreed}
                 className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-20 disabled:hover:shadow-none"
               >
                 {isSubmitting ? (

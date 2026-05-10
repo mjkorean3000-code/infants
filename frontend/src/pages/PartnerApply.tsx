@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Package, Truck, Wallet, CheckCircle2, ChevronRight, Loader2, ShieldCheck, Scale, Ban, Info, FileText } from 'lucide-react';
+import { Package, Truck, Wallet, CheckCircle2, ChevronRight, Loader2, ShieldCheck } from 'lucide-react';
 
 function PartnerApply() {
   const [formData, setFormData] = useState({
@@ -9,13 +9,7 @@ function PartnerApply() {
     category: 'fashion'
   });
   const [userIp, setUserIp] = useState('');
-  const [agreements, setAgreements] = useState({
-    ads_law: false,
-    tax_info: false,
-    no_direct_trade: false,
-    disclaimer: false,
-    ops_guide: false
-  });
+  const [isAgreed, setIsAgreed] = useState(false);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -28,16 +22,10 @@ function PartnerApply() {
       .catch(() => setUserIp('unknown'));
   }, []);
 
-  const allAgreed = Object.values(agreements).every(v => v === true);
-
-  const handleAgreementChange = (key: keyof typeof agreements) => {
-    setAgreements(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!allAgreed) {
-      alert('모든 필수 항목에 동의해야 신청이 가능합니다.');
+    if (!isAgreed) {
+      alert('필수 약관에 동의해야 신청이 가능합니다.');
       return;
     }
     setIsSubmitting(true);
@@ -52,7 +40,6 @@ function PartnerApply() {
 
     if (import.meta.env.VITE_SUPABASE_URL === undefined) {
       setTimeout(() => {
-        console.log('Final Data to Make/Supabase:', { ...formData, ...extraData });
         setIsSubmitting(false);
         setIsSuccess(true);
       }, 1500);
@@ -69,11 +56,12 @@ function PartnerApply() {
             category: formData.category,
             status: 'pending',
             ...extraData,
-            agree_ads_law: agreements.ads_law,
-            agree_tax_info: agreements.tax_info,
-            agree_no_direct_trade: agreements.no_direct_trade,
-            agree_disclaimer: agreements.disclaimer,
-            agree_ops_guide: agreements.ops_guide
+            // 개별 항목 호환성 유지
+            agree_ads_law: true,
+            agree_tax_info: true,
+            agree_no_direct_trade: true,
+            agree_disclaimer: true,
+            agree_ops_guide: true
           }
         ]);
 
@@ -221,36 +209,35 @@ function PartnerApply() {
 
             <div className="mt-6 space-y-4">
               <h4 className="text-xs font-black text-surface-500 uppercase tracking-widest flex items-center gap-2">
-                <ShieldCheck size={14} /> 필수 동의 사항
+                <ShieldCheck size={14} /> 이용약관 및 동의
               </h4>
-              <div className="flex flex-col gap-3">
-                {[
-                  { id: 'ads_law', icon: <Scale size={16} />, label: '[필수] 표시·광고법 준수 서약', sub: '경제적 대가 표기 의무 및 광고법 위반 시 본인 책임 동의' },
-                  { id: 'tax_info', icon: <Info size={16} />, label: '[필수] 정산/세무 정보 제공 동의', sub: '수익금 지급 및 3.3% 원천세 신고를 위한 정보 활용 동의' },
-                  { id: 'no_direct_trade', icon: <Ban size={16} />, label: '[필수] 직거래 금지', sub: '플랫폼 승인 없는 제조사 개별 연락 및 우회 거래 시도 금지 동의' },
-                  { id: 'disclaimer', icon: <FileText size={16} />, label: '[필수] 플랫폼 면책 확인', sub: '플랫폼은 중개자이며 배송/품질 책임은 제조사에 있음을 확인' },
-                  { id: 'ops_guide', icon: <CheckCircle2 size={16} />, label: '[필수] 운영 가이드 준수', sub: '정산 주기 및 콘텐츠 제작 가이드라인 이행 동의' }
-                ].map((item) => (
-                  <div 
-                    key={item.id} 
-                    onClick={() => handleAgreementChange(item.id as keyof typeof agreements)}
-                    className={`flex items-start gap-3 rounded-2xl p-4 border-2 transition-all cursor-pointer ${agreements[item.id as keyof typeof agreements] ? 'border-brand-500 bg-brand-500/5' : 'border-surface-100 bg-surface-50 hover:border-surface-200'}`}
-                  >
-                    <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${agreements[item.id as keyof typeof agreements] ? 'border-brand-500 bg-brand-500' : 'border-surface-300'}`}>
-                      {agreements[item.id as keyof typeof agreements] && <CheckCircle2 size={14} className="text-white" />}
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className={`text-sm font-bold ${agreements[item.id as keyof typeof agreements] ? 'text-brand-500' : 'text-surface-900'}`}>{item.label}</span>
-                      <span className="text-[11px] font-medium text-surface-500">{item.sub}</span>
-                    </div>
-                  </div>
-                ))}
+              
+              <div className="rounded-2xl border-2 border-surface-100 bg-surface-50 p-4">
+                <div className="h-32 overflow-y-auto pr-2 text-[11px] font-medium text-surface-600 leading-relaxed scrollbar-thin scrollbar-thumb-surface-200">
+                  본인은 아래의 모든 운영 규정에 동의합니다.<br /><br />
+                  광고법 준수: 경제적 대가 관계 표기 의무화 및 허위 광고 시 본인 책임 서약<br />
+                  정산 및 세무: 수익금 지급 및 원천세(3.3%) 신고를 위한 신분증/계좌 정보 활용 동의<br />
+                  직거래 금지: 플랫폼 승인 없는 제조사 개별 연락 및 우회 거래 시도 금지<br />
+                  면책 확인: 플랫폼은 시스템 중개자이며 배송/품질 책임은 제조사에 있음을 확인
+                </div>
+              </div>
+
+              <div 
+                onClick={() => setIsAgreed(!isAgreed)}
+                className={`flex items-start gap-3 rounded-2xl p-5 border-2 transition-all cursor-pointer ${isAgreed ? 'border-brand-500 bg-brand-500/5' : 'border-surface-100 bg-surface-50 hover:border-surface-200'}`}
+              >
+                <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isAgreed ? 'border-brand-500 bg-brand-500' : 'border-surface-300'}`}>
+                  {isAgreed && <CheckCircle2 size={14} className="text-white" />}
+                </div>
+                <span className={`text-sm font-bold ${isAgreed ? 'text-brand-500' : 'text-surface-900'}`}>
+                  [필수] 온팬즈 셀러 이용약관 및 개인정보 수집·이용 전체 동의
+                </span>
               </div>
             </div>
 
             <button 
               type="submit" 
-              disabled={isSubmitting || !allAgreed}
+              disabled={isSubmitting || !isAgreed}
               className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-20 disabled:hover:shadow-none"
             >
               {isSubmitting ? (
