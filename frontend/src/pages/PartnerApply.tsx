@@ -8,11 +8,16 @@ function PartnerApply() {
     email: '',
     category: 'fashion'
   });
+  const [agreed, setAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreed) {
+      alert('이용약관 및 개인정보 처리방침에 동의해주세요.');
+      return;
+    }
     setIsSubmitting(true);
     
     // 환경변수 없으면 시뮬레이션
@@ -182,10 +187,24 @@ function PartnerApply() {
               </div>
             </div>
 
+            <div className="flex items-start gap-3 rounded-2xl bg-surface-50 p-5 border border-surface-100">
+              <input 
+                type="checkbox" 
+                id="agreed" 
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="mt-1 h-5 w-5 rounded border-surface-300 text-surface-950 focus:ring-surface-950 cursor-pointer"
+              />
+              <label htmlFor="agreed" className="text-sm font-medium text-surface-600 leading-snug cursor-pointer">
+                <span className="font-bold text-surface-900">[필수]</span> 이용약관 및 개인정보 수집·이용에 동의합니다. 
+                <button type="button" className="ml-2 text-surface-400 underline underline-offset-2 hover:text-surface-950 transition-colors">자세히 보기</button>
+              </label>
+            </div>
+
             <button 
               type="submit" 
-              disabled={isSubmitting}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-70 disabled:hover:shadow-none"
+              disabled={isSubmitting || !agreed}
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-20 disabled:hover:shadow-none"
             >
               {isSubmitting ? (
                 <>
