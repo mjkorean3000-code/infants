@@ -108,10 +108,10 @@ function PartnerApply() {
         
         <div className="flex items-center gap-3 sm:gap-6">
           <button 
-            onClick={() => navigate('/factory-apply')}
-            className="hidden sm:block text-sm font-black text-white/60 hover:text-white transition-all uppercase tracking-widest"
+            onClick={() => navigate('/')}
+            className="text-sm font-black text-white/60 hover:text-white transition-all uppercase tracking-widest"
           >
-            Factory Apply
+            Login
           </button>
           <a 
             href="tel:010-8452-3375" 
