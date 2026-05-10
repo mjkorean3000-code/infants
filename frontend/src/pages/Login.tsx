@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, AtSign, Lock, ShieldCheck, Instagram } from 'lucide-react';
+import { Loader2, User, Lock, ShieldCheck } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -98,7 +98,7 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="group relative">
               <div className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-500 transition-colors group-focus-within:text-brand-500">
-                <Instagram size={20} />
+                <User size={20} />
               </div>
               <input
                 type="text"

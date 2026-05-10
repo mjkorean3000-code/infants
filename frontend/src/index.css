@@ -7,10 +7,16 @@
 @layer base {
   :root {
     --brand-500: 221 90% 56%;
+    --surface-950: #0a0a0a;
+    --surface-100: #f9fafb;
+    --surface-800: #1f2937;
+    --surface-700: #374151;
   }
 
   body {
-    @apply bg-surface-950 text-surface-100 font-sans antialiased;
+    background-color: var(--surface-950);
+    color: var(--surface-100);
+    @apply font-sans antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -30,21 +36,33 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background-color: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-800 rounded-full transition-colors hover:bg-surface-700;
+    background-color: var(--surface-800);
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--surface-700);
   }
 }
 
 @layer components {
   .glass {
-    @apply bg-surface-900/40 backdrop-blur-md border border-white/10;
+    background-color: rgba(17, 24, 39, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   .glass-light {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .text-gradient {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Loader2, CheckCircle2, UserCheck, ShieldAlert, Sparkles, Instagram, Mail } from 'lucide-react';
+import { Loader2, CheckCircle2, UserCheck, ShieldAlert, Sparkles, User, Mail } from 'lucide-react';
 
 interface Influencer {
   id: string;
@@ -144,7 +144,7 @@ export function InfluencerManagement() {
                   <td className="px-8 py-6">
                     <div className="flex flex-col gap-1.5">
                       <div className="flex items-center gap-2 font-black text-white group-hover:text-brand-400 transition-colors">
-                        <Instagram size={14} className="opacity-60" />
+                        <User size={14} className="opacity-60" />
                         {influencer.instagram_id}
                       </div>
                       <div className="flex items-center gap-2 text-xs font-medium text-surface-500">
