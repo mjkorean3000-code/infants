@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Loader2, Copy, CheckCircle2 } from 'lucide-react';
+import { Loader2, Copy, CheckCircle2, ExternalLink, Sparkles } from 'lucide-react';
 import type { DashboardData } from '../hooks/useDashboardData';
 
 interface Product {
@@ -27,7 +27,6 @@ export function ProductCatalog({ influencer }: Props) {
   const fetchActiveProducts = async () => {
     try {
       if (!import.meta.env.VITE_SUPABASE_URL) {
-        // 목업 데이터
         setProducts([
           {
             id: 'mock-123',
@@ -76,78 +75,113 @@ export function ProductCatalog({ influencer }: Props) {
   };
 
   if (loading) {
-    return <div className="flex h-32 items-center justify-center"><Loader2 className="animate-spin text-gray-400" /></div>;
+    return (
+      <div className="flex h-64 items-center justify-center glass rounded-[2rem]">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="animate-spin text-brand-500" size={32} />
+          <p className="text-sm font-bold text-surface-400">상품을 불러오고 있습니다...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-      <div className="border-b border-gray-200 bg-gray-50/50 px-6 py-5">
-        <h2 className="text-lg font-bold text-gray-900">판매 가능 상품 카탈로그</h2>
-        <p className="text-sm text-gray-500 mt-1">마음에 드는 상품의 링크를 복사해서 바로 판매를 시작해보세요!</p>
+    <div className="rounded-[2.5rem] glass overflow-hidden shadow-premium-xl border-white/5">
+      <div className="border-b border-white/5 bg-white/5 px-8 py-8 sm:px-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles size={18} className="text-brand-400" />
+            <h2 className="text-2xl font-black text-white tracking-tight">판매 가능 상품 카탈로그</h2>
+          </div>
+          <p className="text-surface-400 font-medium">마음에 드는 상품의 링크를 복사해서 바로 판매를 시작해보세요!</p>
+        </div>
+        <div className="hidden sm:block">
+          <div className="rounded-full bg-brand-500/10 border border-brand-500/20 px-4 py-2 text-xs font-bold text-brand-400">
+            총 {products.length}개의 상품
+          </div>
+        </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-8 sm:p-10">
         {products.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
-            현재 판매 가능한 상품이 없습니다. 곧 더 많은 상품이 추가될 예정입니다!
+          <div className="text-center py-20">
+            <div className="mx-auto w-16 h-16 rounded-full bg-surface-900 flex items-center justify-center mb-6">
+              <Sparkles className="text-surface-600" size={32} />
+            </div>
+            <p className="text-surface-400 font-bold text-lg">현재 판매 가능한 상품이 없습니다.</p>
+            <p className="text-surface-500 text-sm mt-2">곧 더 많은 상품이 추가될 예정입니다!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => {
               const myCommission = product.seller_price * ((influencer?.settlement_rate || 0) / 100);
               
               return (
-                <div key={product.id} className="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md">
-                  <div className="aspect-square w-full overflow-hidden bg-gray-100">
+                <div key={product.id} className="group relative flex flex-col overflow-hidden rounded-[2rem] bg-surface-900/40 border border-white/5 transition-all duration-300 hover:border-brand-500/30 hover:bg-surface-900/80 shadow-premium-md hover:shadow-premium-lg">
+                  <div className="aspect-[4/5] w-full overflow-hidden bg-surface-800 relative">
                     {product.image_urls?.[0] ? (
                       <img 
                         src={product.image_urls[0]} 
                         alt={product.name} 
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
                       />
                     ) : (
-                      <div className="h-full w-full bg-gray-200"></div>
+                      <div className="h-full w-full flex items-center justify-center">
+                        <Sparkles className="text-surface-700" size={48} />
+                      </div>
                     )}
+                    <div className="absolute top-4 left-4">
+                      <div className="rounded-full bg-black/60 backdrop-blur-md px-3 py-1.5 text-[10px] font-black text-white border border-white/10 uppercase tracking-widest">
+                        New Arrival
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="flex flex-1 flex-col p-5">
-                    <h3 className="font-bold text-gray-900 line-clamp-1 mb-1">{product.name}</h3>
-                    <p className="text-lg font-extrabold text-black mb-3">{product.seller_price.toLocaleString()}원</p>
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="font-bold text-white text-lg line-clamp-1 mb-2 group-hover:text-brand-400 transition-colors">{product.name}</h3>
+                    <p className="text-xl font-black text-white mb-5">{product.seller_price.toLocaleString()}원</p>
                     
-                    <div className="mt-auto mb-4 inline-flex w-fit items-center rounded-lg bg-blue-50 px-3 py-1.5">
-                      <span className="text-xs font-bold text-blue-700">예상 수익금: 건당 {Math.floor(myCommission).toLocaleString()}원</span>
+                    <div className="mb-6 flex flex-col gap-2">
+                      <div className="flex items-center justify-between text-xs font-bold mb-1">
+                        <span className="text-surface-400">예상 수익 (건당)</span>
+                        <span className="text-brand-400">+{((influencer?.settlement_rate || 0))}%</span>
+                      </div>
+                      <div className="w-full h-12 flex items-center px-4 rounded-xl bg-brand-500/10 border border-brand-500/20">
+                        <span className="text-sm font-black text-brand-400">{Math.floor(myCommission).toLocaleString()}원</span>
+                      </div>
                     </div>
 
-                    <div className="mb-4 flex flex-col gap-1.5">
-                      <label className="text-xs font-bold text-gray-700">고유 판매 링크</label>
-                      <input 
-                        type="text" 
-                        readOnly 
-                        value={`https://onfans.club/product/${product.id}/${influencer?.tracking_link || ''}`}
-                        className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-600 focus:outline-none"
-                      />
+                    <div className="mt-auto space-y-3">
+                      <button 
+                        onClick={() => handleCopyLink(product.id)}
+                        className={`flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-black transition-all duration-300 ${
+                          copiedId === product.id
+                            ? 'bg-green-500 text-white shadow-green-500/20'
+                            : 'bg-white text-black hover:bg-brand-500 hover:text-white shadow-premium-md'
+                        }`}
+                      >
+                        {copiedId === product.id ? (
+                          <>
+                            <CheckCircle2 size={18} />
+                            수익 링크 복사됨!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={18} />
+                            내 수익 링크 복사
+                          </>
+                        )}
+                      </button>
+                      <a 
+                        href={`https://onfans.club/product/${product.id}/${influencer?.tracking_link || ''}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-black text-surface-400 border border-white/5 hover:bg-white/5 transition-all"
+                      >
+                        <ExternalLink size={18} />
+                        페이지 미리보기
+                      </a>
                     </div>
-
-                    <button 
-                      onClick={() => handleCopyLink(product.id)}
-                      className={`flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold transition-all ${
-                        copiedId === product.id
-                          ? 'bg-green-500 text-white'
-                          : 'bg-black text-white hover:scale-[1.02] active:scale-95'
-                      }`}
-                    >
-                      {copiedId === product.id ? (
-                        <>
-                          <CheckCircle2 size={16} />
-                          복사 완료!
-                        </>
-                      ) : (
-                        <>
-                          <Copy size={16} />
-                          내 수익 링크 복사
-                        </>
-                      )}
-                    </button>
                   </div>
                 </div>
               );

@@ -53,84 +53,85 @@ function PartnerApply() {
 
   if (isSuccess) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0a0a0a] px-4">
-        <div className="flex flex-col items-center text-center">
-          <div className="mb-6 rounded-full bg-white/10 p-4">
-            <CheckCircle2 size={48} className="text-white" />
+      <div className="flex min-h-screen items-center justify-center bg-surface-950 px-4 font-sans">
+        <div className="flex flex-col items-center text-center animate-scale-in">
+          <div className="mb-8 rounded-full bg-brand-500/10 p-6 shadow-premium-lg">
+            <CheckCircle2 size={56} className="text-brand-500" />
           </div>
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">입점 신청 완료!</h2>
-          <p className="mb-8 max-w-md text-gray-400">
+          <h2 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-5xl">입점 신청 완료!</h2>
+          <p className="mb-10 max-w-md text-surface-400 font-medium text-lg leading-relaxed">
             파트너 신청이 성공적으로 접수되었습니다. 담당자가 영업일 기준 1~2일 내에 이메일 및 인스타그램 DM으로 연락드리겠습니다.
           </p>
-          <p className="rounded-full bg-white/5 border border-white/10 px-8 py-4 text-sm font-bold text-white/50">
+          <div className="rounded-full bg-white/5 border border-white/10 px-10 py-5 text-sm font-bold text-white/40 shadow-premium-sm">
             이 창을 닫아주세요.
-          </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] font-sans selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-6 py-6 sm:px-12">
-        <div className="text-xl font-black tracking-tighter text-white">ONFANS</div>
-        <a href="/factory-apply" className="rounded-full bg-white/10 px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-white/20">
-          공장 입점 제안하기
-        </a>
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-6 py-8 sm:px-12">
+        <div className="glass-light rounded-full px-6 py-2.5 flex items-center shadow-premium-lg">
+          <div className="text-xs font-black tracking-tighter text-white/90">ONFANS</div>
+        </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="px-6 py-12 sm:px-12 sm:py-24 lg:py-32">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="mb-6 text-[36px] font-black leading-[1.2] tracking-tight text-white sm:text-6xl lg:text-7xl break-keep">
+      <section className="pt-32 pb-12 px-6 sm:px-12 sm:pt-48">
+        <div className="mx-auto max-w-4xl text-center animate-fade-in-up">
+          <h1 className="mb-6 text-[36px] font-black leading-[1.1] tracking-tight text-white sm:text-7xl lg:text-8xl break-keep">
             무재고로 시작하는<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500">나만의 브랜드.</span>
+            <span className="text-gradient mt-2">나만의 브랜드.</span>
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400 sm:text-xl break-keep">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-surface-400 sm:text-xl font-medium break-keep">
             재고 부담, 배송, CS 스트레스 없이 오직 콘텐츠에만 집중하세요. 온팬즈가 당신의 커머스를 현실로 만듭니다.
           </p>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="px-6 pb-20 sm:px-12 lg:pb-32">
+      <section className="px-6 pb-20 sm:px-12 animate-fade-in duration-700">
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3">
-          <div className="rounded-3xl bg-[#111111] border border-white/5 p-8 transition-colors hover:bg-[#1a1a1a]">
-            <div className="mb-4 inline-flex rounded-2xl bg-white/10 p-3 text-white">
-              <Package size={24} />
+          <div className="rounded-[2rem] glass p-8 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+            <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500 shadow-premium-sm">
+              <Package size={28} />
             </div>
-            <h3 className="mb-2 text-xl font-bold text-white">재고 부담 제로</h3>
-            <p className="text-gray-400">공장에서 직접 배송되는 시스템으로 재고 리스크가 전혀 없습니다.</p>
+            <h3 className="mb-3 text-xl font-bold text-white">재고 부담 제로</h3>
+            <p className="text-surface-400 font-medium leading-relaxed">공장에서 직접 배송되는 시스템으로 재고 리스크가 전혀 없습니다.</p>
           </div>
-          <div className="rounded-3xl bg-[#111111] border border-white/5 p-8 transition-colors hover:bg-[#1a1a1a]">
-            <div className="mb-4 inline-flex rounded-2xl bg-white/10 p-3 text-white">
-              <Truck size={24} />
+          <div className="rounded-[2rem] glass p-8 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+            <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500 shadow-premium-sm">
+              <Truck size={28} />
             </div>
-            <h3 className="mb-2 text-xl font-bold text-white">배송/CS 100% 대행</h3>
-            <p className="text-gray-400">골치 아픈 배송 처리와 고객 응대는 모두 온팬즈가 책임집니다.</p>
+            <h3 className="mb-3 text-xl font-bold text-white">배송/CS 100% 대행</h3>
+            <p className="text-surface-400 font-medium leading-relaxed">골치 아픈 배송 처리와 고객 응대는 모두 온팬즈가 책임집니다.</p>
           </div>
-          <div className="rounded-3xl bg-[#111111] border border-white/5 p-8 transition-colors hover:bg-[#1a1a1a]">
-            <div className="mb-4 inline-flex rounded-2xl bg-white/10 p-3 text-white">
-              <Wallet size={24} />
+          <div className="rounded-[2rem] glass p-8 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+            <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500 shadow-premium-sm">
+              <Wallet size={28} />
             </div>
-            <h3 className="mb-2 text-xl font-bold text-white">투명한 자동 정산</h3>
-            <p className="text-gray-400">마진율에 따른 수익금이 지정된 계좌로 안전하게 자동 정산됩니다.</p>
+            <h3 className="mb-3 text-xl font-bold text-white">투명한 자동 정산</h3>
+            <p className="text-surface-400 font-medium leading-relaxed">마진율에 따른 수익금이 지정된 계좌로 안전하게 자동 정산됩니다.</p>
           </div>
         </div>
       </section>
 
       {/* Application Form */}
-      <section className="px-6 pb-32 sm:px-12">
-        <div className="mx-auto max-w-2xl rounded-3xl bg-white p-8 sm:p-12 shadow-2xl">
-          <h2 className="mb-2 text-2xl font-bold tracking-tight text-black sm:text-3xl">파트너 입점 신청</h2>
-          <p className="mb-8 text-gray-500">아래 정보를 입력해주시면 빠르게 검토 후 연락드리겠습니다.</p>
+      <section className="px-6 pb-32 sm:px-12 animate-fade-in-up duration-1000">
+        <div className="mx-auto max-w-2xl rounded-[2.5rem] bg-white p-8 sm:p-14 shadow-premium-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl" />
           
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="instagram_id" className="text-sm font-bold text-gray-900">인스타그램 ID</label>
+          <h2 className="mb-2 text-3xl font-bold tracking-tight text-surface-950 sm:text-4xl">파트너 입점 신청</h2>
+          <p className="mb-10 text-surface-500 font-medium">아래 정보를 입력해주시면 빠르게 검토 후 연락드리겠습니다.</p>
+          
+          <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+            <div className="flex flex-col gap-2.5">
+              <label htmlFor="instagram_id" className="text-sm font-bold text-surface-900 ml-1">인스타그램 ID</label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">@</span>
+                <span className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-400 font-bold text-lg">@</span>
                 <input 
                   type="text" 
                   id="instagram_id" 
@@ -139,13 +140,13 @@ function PartnerApply() {
                   placeholder="onfans_official"
                   value={formData.instagram_id}
                   onChange={handleChange}
-                  className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 py-3 pl-9 pr-4 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
+                  className="w-full rounded-2xl border-2 border-surface-100 bg-surface-50 py-4 pl-11 pr-5 font-bold text-surface-950 transition-all focus:border-surface-950 focus:bg-white focus:outline-none placeholder:text-surface-300"
                 />
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="text-sm font-bold text-gray-900">연락용 이메일 주소</label>
+            <div className="flex flex-col gap-2.5">
+              <label htmlFor="email" className="text-sm font-bold text-surface-900 ml-1">연락용 이메일 주소</label>
               <input 
                 type="email" 
                 id="email" 
@@ -154,40 +155,45 @@ function PartnerApply() {
                 placeholder="example@naver.com"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 px-4 py-3 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none"
+                className="w-full rounded-2xl border-2 border-surface-100 bg-surface-50 px-5 py-4 font-bold text-surface-950 transition-all focus:border-surface-950 focus:bg-white focus:outline-none placeholder:text-surface-300"
               />
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="category" className="text-sm font-bold text-gray-900">주요 활동 카테고리</label>
-              <select 
-                id="category" 
-                name="category" 
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full rounded-xl border-2 border-gray-100 bg-gray-50 px-4 py-3 font-medium text-black transition-colors focus:border-black focus:bg-white focus:outline-none appearance-none"
-              >
-                <option value="fashion">의류 / 패션잡화</option>
-                <option value="beauty">뷰티 / 코스메틱</option>
-                <option value="living">리빙 / 홈데코</option>
-                <option value="digital">디지털 / 전자기기</option>
-                <option value="food">식품 / 건강</option>
-                <option value="other">기타</option>
-              </select>
+            <div className="flex flex-col gap-2.5">
+              <label htmlFor="category" className="text-sm font-bold text-surface-900 ml-1">주요 활동 카테고리</label>
+              <div className="relative">
+                <select 
+                  id="category" 
+                  name="category" 
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="w-full rounded-2xl border-2 border-surface-100 bg-surface-50 px-5 py-4 font-bold text-surface-950 transition-all focus:border-surface-950 focus:bg-white focus:outline-none appearance-none cursor-pointer"
+                >
+                  <option value="fashion">의류 / 패션잡화</option>
+                  <option value="beauty">뷰티 / 코스메틱</option>
+                  <option value="living">리빙 / 홈데코</option>
+                  <option value="digital">디지털 / 전자기기</option>
+                  <option value="food">식품 / 건강</option>
+                  <option value="other">기타</option>
+                </select>
+                <div className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 text-surface-400">
+                  <ChevronRight size={20} className="rotate-90" />
+                </div>
+              </div>
             </div>
 
             <button 
               type="submit" 
               disabled={isSubmitting}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-black py-4 font-bold text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:hover:scale-100"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-70 disabled:hover:shadow-none"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 size={20} className="animate-spin" /> 처리 중...
+                  <Loader2 size={22} className="animate-spin" /> 처리 중...
                 </>
               ) : (
                 <>
-                  입점 신청하기 <ChevronRight size={20} />
+                  입점 신청하기 <ChevronRight size={22} />
                 </>
               )}
             </button>
