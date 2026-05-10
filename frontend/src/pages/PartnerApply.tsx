@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Package, Truck, Wallet, CheckCircle2, ChevronRight, Loader2 } from 'lucide-react';
+import { Package, Truck, Wallet, CheckCircle2, ChevronRight, Loader2, ShieldCheck, Scale, Ban, Info, FileText } from 'lucide-react';
 
 function PartnerApply() {
   const [formData, setFormData] = useState({
@@ -8,21 +8,51 @@ function PartnerApply() {
     email: '',
     category: 'fashion'
   });
-  const [agreed, setAgreed] = useState(false);
+  const [userIp, setUserIp] = useState('');
+  const [agreements, setAgreements] = useState({
+    ads_law: false,
+    tax_info: false,
+    no_direct_trade: false,
+    disclaimer: false,
+    ops_guide: false
+  });
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Fetch User IP
+  useEffect(() => {
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => setUserIp(data.ip))
+      .catch(() => setUserIp('unknown'));
+  }, []);
+
+  const allAgreed = Object.values(agreements).every(v => v === true);
+
+  const handleAgreementChange = (key: keyof typeof agreements) => {
+    setAgreements(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!agreed) {
-      alert('이용약관 및 개인정보 처리방침에 동의해주세요.');
+    if (!allAgreed) {
+      alert('모든 필수 항목에 동의해야 신청이 가능합니다.');
       return;
     }
     setIsSubmitting(true);
     
-    // 환경변수 없으면 시뮬레이션
+    const extraData = {
+      is_agreed: true,
+      agreed_at: new Date().toISOString(),
+      user_ip: userIp,
+      terms_version: 'v1.0',
+      user_type: 'influencer'
+    };
+
     if (import.meta.env.VITE_SUPABASE_URL === undefined) {
       setTimeout(() => {
+        console.log('Final Data to Make/Supabase:', { ...formData, ...extraData });
         setIsSubmitting(false);
         setIsSuccess(true);
       }, 1500);
@@ -37,7 +67,8 @@ function PartnerApply() {
             instagram_id: formData.instagram_id,
             email: formData.email,
             category: formData.category,
-            status: 'pending'
+            status: 'pending',
+            ...extraData // 추가 데이터 포함
           }
         ]);
 
@@ -77,14 +108,12 @@ function PartnerApply() {
 
   return (
     <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
-      {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center px-6 py-8 sm:px-12">
         <div className="glass-light rounded-full px-6 py-2.5 flex items-center shadow-premium-lg">
           <div className="text-xs font-black tracking-tighter text-white/90">ONFANS</div>
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section className="pt-32 pb-12 px-6 sm:px-12 sm:pt-48">
         <div className="mx-auto max-w-4xl text-center animate-fade-in-up">
           <h1 className="mb-6 text-[36px] font-black leading-[1.1] tracking-tight text-white sm:text-7xl lg:text-8xl break-keep">
@@ -97,7 +126,6 @@ function PartnerApply() {
         </div>
       </section>
 
-      {/* Features Grid */}
       <section className="px-6 pb-20 sm:px-12 animate-fade-in duration-700">
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3">
           <div className="rounded-[2rem] glass p-8 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
@@ -124,7 +152,6 @@ function PartnerApply() {
         </div>
       </section>
 
-      {/* Application Form */}
       <section className="px-6 pb-32 sm:px-12 animate-fade-in-up duration-1000">
         <div className="mx-auto max-w-2xl rounded-[2.5rem] bg-white p-8 sm:p-14 shadow-premium-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl" />
@@ -187,23 +214,38 @@ function PartnerApply() {
               </div>
             </div>
 
-            <div className="flex items-start gap-3 rounded-2xl bg-surface-50 p-5 border border-surface-100">
-              <input 
-                type="checkbox" 
-                id="agreed" 
-                checked={agreed}
-                onChange={(e) => setAgreed(e.target.checked)}
-                className="mt-1 h-5 w-5 rounded border-surface-300 text-surface-950 focus:ring-surface-950 cursor-pointer"
-              />
-              <label htmlFor="agreed" className="text-sm font-medium text-surface-600 leading-snug cursor-pointer">
-                <span className="font-bold text-surface-900">[필수]</span> 이용약관 및 개인정보 수집·이용에 동의합니다. 
-                <button type="button" className="ml-2 text-surface-400 underline underline-offset-2 hover:text-surface-950 transition-colors">자세히 보기</button>
-              </label>
+            <div className="mt-6 space-y-4">
+              <h4 className="text-xs font-black text-surface-500 uppercase tracking-widest flex items-center gap-2">
+                <ShieldCheck size={14} /> 필수 동의 사항
+              </h4>
+              <div className="flex flex-col gap-3">
+                {[
+                  { id: 'ads_law', icon: <Scale size={16} />, label: '[필수] 표시·광고법 준수 서약', sub: '경제적 대가 표기 의무 및 광고법 위반 시 본인 책임 동의' },
+                  { id: 'tax_info', icon: <Info size={16} />, label: '[필수] 정산/세무 정보 제공 동의', sub: '수익금 지급 및 3.3% 원천세 신고를 위한 정보 활용 동의' },
+                  { id: 'no_direct_trade', icon: <Ban size={16} />, label: '[필수] 직거래 금지', sub: '플랫폼 승인 없는 제조사 개별 연락 및 우회 거래 시도 금지 동의' },
+                  { id: 'disclaimer', icon: <FileText size={16} />, label: '[필수] 플랫폼 면책 확인', sub: '플랫폼은 중개자이며 배송/품질 책임은 제조사에 있음을 확인' },
+                  { id: 'ops_guide', icon: <CheckCircle2 size={16} />, label: '[필수] 운영 가이드 준수', sub: '정산 주기 및 콘텐츠 제작 가이드라인 이행 동의' }
+                ].map((item) => (
+                  <div 
+                    key={item.id} 
+                    onClick={() => handleAgreementChange(item.id as keyof typeof agreements)}
+                    className={`flex items-start gap-3 rounded-2xl p-4 border-2 transition-all cursor-pointer ${agreements[item.id as keyof typeof agreements] ? 'border-brand-500 bg-brand-500/5' : 'border-surface-100 bg-surface-50 hover:border-surface-200'}`}
+                  >
+                    <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${agreements[item.id as keyof typeof agreements] ? 'border-brand-500 bg-brand-500' : 'border-surface-300'}`}>
+                      {agreements[item.id as keyof typeof agreements] && <CheckCircle2 size={14} className="text-white" />}
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <span className={`text-sm font-bold ${agreements[item.id as keyof typeof agreements] ? 'text-brand-500' : 'text-surface-900'}`}>{item.label}</span>
+                      <span className="text-[11px] font-medium text-surface-500">{item.sub}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <button 
               type="submit" 
-              disabled={isSubmitting || !agreed}
+              disabled={isSubmitting || !allAgreed}
               className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-20 disabled:hover:shadow-none"
             >
               {isSubmitting ? (
