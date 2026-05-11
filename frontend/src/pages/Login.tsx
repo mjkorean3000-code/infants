@@ -13,7 +13,7 @@ export default function Login() {
   useEffect(() => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) navigate('/seller-dashboard');
+      if (session) navigate('/dashboard');
     };
     checkUser();
   }, [navigate]);
@@ -33,7 +33,7 @@ export default function Login() {
       });
 
       if (error) throw error;
-      navigate('/seller-dashboard');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message || '로그인에 실패했습니다.');
     } finally {
