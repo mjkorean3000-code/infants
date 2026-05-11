@@ -46,8 +46,8 @@ export default function Login() {
       <div className="w-full max-w-[480px] animate-fade-in">
         <div className="mb-12 text-center">
           {/* 자물쇠 아이콘을 제거하고 로고를 대폭 강조 */}
-          <div className="mx-auto mb-12 flex h-40 w-40 items-center justify-center rounded-[3rem] bg-white/5 border border-white/10 p-6 shadow-premium-2xl">
-            <img src="/logo.png" alt="ONFANS" className="w-full h-full object-contain" />
+          <div className="mx-auto mb-12 flex h-40 w-40 items-center justify-center rounded-full bg-white/5 border border-white/10 p-1 shadow-premium-2xl overflow-hidden">
+            <img src="/logo.png" alt="ONFANS" className="w-full h-full object-cover rounded-full" />
           </div>
           <p className="mt-4 text-xl font-bold text-surface-400">
             파트너 대시보드 로그인

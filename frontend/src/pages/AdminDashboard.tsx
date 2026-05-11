@@ -21,8 +21,8 @@ function AdminDashboard() {
         <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 animate-fade-in-up">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-2 shadow-premium-lg">
-                <img src="/logo.png" alt="ONFANS" className="h-10 w-10 object-contain" />
+              <div className="rounded-2xl bg-white/5 border border-white/10 p-1 shadow-premium-lg">
+                <img src="/logo.png" alt="ONFANS" className="h-12 w-12 rounded-full object-cover shadow-premium-sm" />
               </div>
               <h1 className="text-3xl font-black text-white sm:text-4xl lg:text-5xl tracking-tight">
                 온팬즈 <span className="text-gradient">통합 관리자</span>

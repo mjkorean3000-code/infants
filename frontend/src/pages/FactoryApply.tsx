@@ -121,8 +121,8 @@ function FactoryApply() {
   return (
     <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 sm:px-12 backdrop-blur-md bg-surface-950/20">
-        <div className="glass-light rounded-full px-5 py-2 flex items-center shadow-premium-lg">
-          <img src="/logo.png" alt="ONFANS" className="h-10 sm:h-12 object-contain" />
+        <div className="glass-light rounded-full p-1 flex items-center shadow-premium-lg">
+          <img src="/logo.png" alt="ONFANS" className="h-11 w-11 sm:h-14 sm:w-14 rounded-full object-cover shadow-premium-sm" />
         </div>
         
         <div className="flex items-center">
