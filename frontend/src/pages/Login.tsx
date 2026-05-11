@@ -24,7 +24,9 @@ export default function Login() {
     setError(null);
 
     try {
-      const email = `${instagramId}@onfans.club`;
+      // 입력값이 이메일 형식이면 그대로 사용, 아니면 @onfans.club을 붙임
+      const email = instagramId.includes('@') ? instagramId : `${instagramId}@onfans.club`;
+      
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
