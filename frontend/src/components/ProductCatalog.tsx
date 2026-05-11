@@ -34,6 +34,7 @@ export function ProductCatalog({ influencer }: Props) {
             name: '프리미엄 오버핏 헤비 쭈리 맨투맨',
             description: '탄탄한 중량감과 완벽한 핏을 자랑하는 남녀공용 오버핏 맨투맨입니다.',
             seller_price: 39000,
+            factory_cost: 20000,
             image_urls: ['https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800&h=800']
           }
         ]);
