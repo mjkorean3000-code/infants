@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck } from 'lucide-react';
 
+// Fixed navigate error
 function FactoryApply() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [step, setStep] = useState<1 | 2>(1);
   const [isDropshipping, setIsDropshipping] = useState<boolean | null>(null);
   const [userIp, setUserIp] = useState('');
@@ -121,13 +125,29 @@ function FactoryApply() {
           <img src="/logo.png" alt="ONFANS" className="h-10 sm:h-12 object-contain" />
         </div>
         
-        <div className="flex items-center gap-6 sm:gap-10">
-          <button 
-            onClick={() => navigate('/apply')}
-            className="text-[11px] sm:text-xs font-black text-white/40 hover:text-white transition-all uppercase tracking-widest"
-          >
-            Influencer Apply
-          </button>
+        <div className="flex items-center gap-3 sm:gap-6">
+          <div className="flex items-center gap-1 sm:gap-2 glass-light rounded-full p-1 shadow-premium-lg">
+            <button 
+              onClick={() => navigate('/factory-apply')}
+              className={`px-4 py-2 text-[10px] sm:text-xs font-black uppercase tracking-widest rounded-full transition-all ${
+                location.pathname === '/factory-apply' 
+                  ? 'bg-white text-black shadow-premium-sm' 
+                  : 'text-white/40 hover:text-white'
+              }`}
+            >
+              Factory
+            </button>
+            <button 
+              onClick={() => navigate('/apply')}
+              className={`px-4 py-2 text-[10px] sm:text-xs font-black uppercase tracking-widest rounded-full transition-all ${
+                location.pathname === '/apply' 
+                  ? 'bg-white text-black shadow-premium-sm' 
+                  : 'text-white/40 hover:text-white'
+              }`}
+            >
+              Influencer
+            </button>
+          </div>
           <button 
             onClick={() => navigate('/')}
             className="rounded-full bg-white/10 border border-white/10 px-6 py-2.5 text-xs sm:text-sm font-black text-white transition-all hover:bg-white hover:text-black active:scale-95"

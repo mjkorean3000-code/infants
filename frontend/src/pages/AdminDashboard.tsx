@@ -1,6 +1,6 @@
 import { InfluencerManagement } from '../components/admin/InfluencerManagement';
 import { ProductManagement } from '../components/admin/ProductManagement';
-import { Loader2, ShieldCheck } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 function AdminDashboard() {

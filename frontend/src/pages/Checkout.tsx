@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { CreditCard, CheckCircle2, ChevronLeft, Loader2, Package, Truck, User, ShieldCheck } from 'lucide-react';
+import { CreditCard, CheckCircle2, ChevronLeft, Loader2, Package, Truck } from 'lucide-react';
 
 declare global {
   interface Window {
