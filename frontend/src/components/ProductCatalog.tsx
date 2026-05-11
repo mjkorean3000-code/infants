@@ -8,6 +8,7 @@ interface Product {
   name: string;
   description: string;
   seller_price: number;
+  factory_cost: number;
   image_urls: string[];
 }
 
@@ -114,7 +115,8 @@ export function ProductCatalog({ influencer }: Props) {
         ) : (
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => {
-              const myCommission = product.seller_price * ((influencer?.settlement_rate || 0) / 100);
+              const margin = product.seller_price - (product.factory_cost || 0);
+              const myCommission = margin * ((influencer?.settlement_rate || 0) / 100);
               
               return (
                 <div key={product.id} className="group relative flex flex-col overflow-hidden rounded-[2rem] bg-surface-900/40 border border-white/5 transition-all duration-300 hover:border-brand-500/30 hover:bg-surface-900/80 shadow-premium-md hover:shadow-premium-lg">
@@ -144,7 +146,7 @@ export function ProductCatalog({ influencer }: Props) {
                     <div className="mb-6 flex flex-col gap-2">
                       <div className="flex items-center justify-between text-xs font-bold mb-1">
                         <span className="text-surface-400">예상 수익 (건당)</span>
-                        <span className="text-brand-400">+{((influencer?.settlement_rate || 0))}%</span>
+                        <span className="text-brand-400">수수료 {((influencer?.settlement_rate || 0))}% 적용</span>
                       </div>
                       <div className="w-full h-12 flex items-center px-4 rounded-xl bg-brand-500/10 border border-brand-500/20">
                         <span className="text-sm font-black text-brand-400">{Math.floor(myCommission).toLocaleString()}원</span>
