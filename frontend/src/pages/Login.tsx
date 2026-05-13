@@ -30,7 +30,24 @@ export default function Login() {
     setError(null);
 
     try {
-      // 입력값이 이메일 형식이면 그대로 사용, 아니면 @onfans.club을 붙임
+      // 1. 인플루언서 전용 DB 우회 로그인 (입력값이 이메일 형식이 아닐 때만 시도)
+      if (!instagramId.includes('@') && import.meta.env.VITE_SUPABASE_URL) {
+        const { data: influencer } = await supabase
+          .from('influencers')
+          .select('*')
+          .eq('instagram_id', instagramId)
+          .eq('password', password)
+          .eq('status', 'approved')
+          .maybeSingle();
+
+        if (influencer) {
+          localStorage.setItem('seller_data', JSON.stringify(influencer));
+          navigate('/dashboard');
+          return;
+        }
+      }
+
+      // 2. 어드민 등 기타 Supabase Auth 로그인
       const email = instagramId.includes('@') ? instagramId : `${instagramId}@onfans.club`;
       
       const { data: { session }, error } = await supabase.auth.signInWithPassword({

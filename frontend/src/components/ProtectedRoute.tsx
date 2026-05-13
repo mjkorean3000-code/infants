@@ -12,6 +12,16 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         
+        // 관리자 페이지 접근 시 권한 체크 (@onfans.club 도메인 이메일만 허용)
+        const isAdminRoute = window.location.pathname.startsWith('/admin');
+
+        // 셀러 대시보드 접근 시 로컬 스토리지 확인 (인플루언서 우회 로그인)
+        if (!isAdminRoute && localStorage.getItem('seller_data')) {
+          setIsAuthenticated(true);
+          setLoading(false);
+          return;
+        }
+
         if (!session) {
           setIsAuthenticated(false);
           setLoading(false);
@@ -40,6 +50,14 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
     // 로그인 상태 변화 실시간 감지
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const isAdminRoute = window.location.pathname.startsWith('/admin');
+
+      // 셀러 대시보드 로컬 세션 유지
+      if (!isAdminRoute && localStorage.getItem('seller_data')) {
+        setIsAuthenticated(true);
+        return;
+      }
+
       if (!session) {
         setIsAuthenticated(false);
         return;
