@@ -158,7 +158,7 @@ function FactoryApply() {
           </div>
           <h1 className="mb-6 text-[36px] font-black leading-[1.2] tracking-tight text-white sm:text-7xl lg:text-8xl break-keep">
             생산만 하세요.<br />
-            <span className="text-gradient mt-2">판매는 온팬즈가 알아서 합니다.</span>
+            <span className="text-gradient mt-2">판매는 파트너들이 해줍니다.</span>
           </h1>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-surface-400 sm:text-xl font-medium break-keep">
             마케팅, CS, 정산, 셀러 관리 — 이제 하나도 직접 안 하셔도 됩니다.<br />상품 정보 등록 한 번으로, 수백 명의 인플루언서가 팬덤에 직접 판매합니다.
@@ -176,7 +176,7 @@ function FactoryApply() {
         <div className="mx-auto max-w-4xl rounded-[2rem] glass p-8 shadow-premium-lg border-white/5">
           <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10 gap-8 sm:gap-0">
             <div className="flex flex-col items-center text-center py-4 sm:py-0">
-              <span className="text-4xl font-black text-white mb-2">5분</span>
+              <span className="text-4xl font-black text-white mb-2">3분</span>
               <span className="text-surface-400 font-medium">입점 신청 완료까지</span>
             </div>
             <div className="flex flex-col items-center text-center py-4 sm:py-0">
@@ -277,18 +277,6 @@ function FactoryApply() {
       </section>
 
       <section className="px-6 pb-32 sm:px-12">
-        <div className="mx-auto max-w-4xl">
-          <div className="rounded-[2.5rem] glass p-10 sm:p-14 text-center border-l-4 border-brand-500 shadow-premium-xl">
-            <Quote className="mx-auto mb-6 text-brand-500/30" size={48} />
-            <p className="mb-8 text-xl sm:text-2xl font-black text-white leading-relaxed break-keep">
-              "공장은 잘 만드는 게 본업입니다. 팔리는 건 온팬즈가 알아서 해준다면, 저희는 더 잘 만드는 데만 집중할 수 있습니다."
-            </p>
-            <p className="text-surface-400 font-bold">— 온팬즈 파트너 공장 대표 피드백</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 pb-32 sm:px-12">
         <div className="mx-auto max-w-3xl text-center">
           <p className="mb-6 text-brand-400 font-bold animate-pulse">
             지금 입점하면 초기 노출 우선권이 주어집니다. 선착순 마감.
@@ -299,7 +287,7 @@ function FactoryApply() {
             }}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-500 px-10 py-5 text-lg font-black text-white shadow-brand-500/20 shadow-premium-xl transition-all hover:bg-brand-600 hover:scale-105 active:scale-95 mb-6"
           >
-            5분 만에 공장 입점 신청하기 <ArrowRight size={20} />
+            공장 입점 신청하기 <ArrowRight size={20} />
           </button>
           <div className="flex items-center justify-center gap-4 text-sm font-medium text-surface-500">
             <span>별도 계약 없음</span>
