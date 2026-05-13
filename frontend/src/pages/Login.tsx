@@ -50,7 +50,7 @@ export default function Login() {
       // 2. 어드민 등 기타 Supabase Auth 로그인
       const email = instagramId.includes('@') ? instagramId : `${instagramId}@onfans.club`;
       
-      const { data: { session }, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
