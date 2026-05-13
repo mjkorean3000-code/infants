@@ -30,9 +30,32 @@ export default function Login() {
     setError(null);
 
     try {
-      // 입력값이 이메일 형식이면 그대로 사용, 아니면 @onfans.club을 붙임
+      // 1. 하드코딩된 어드민 로그인 체크
+      if (instagramId === 'admin' && password === 'admin1234') {
+        localStorage.setItem('adminSession', 'true');
+        navigate('/admin');
+        return;
+      }
+
+      // 2. 인플루언서 DB 직접 체크 (Auth 시스템 우회)
+      if (import.meta.env.VITE_SUPABASE_URL) {
+        const { data: influencer } = await supabase
+          .from('influencers')
+          .select('*')
+          .eq('instagram_id', instagramId)
+          .eq('password', password)
+          .eq('status', 'approved')
+          .single();
+
+        if (influencer) {
+          localStorage.setItem('seller_data', JSON.stringify(influencer));
+          navigate('/dashboard');
+          return;
+        }
+      }
+
+      // 3. 기존 Auth 로그인 시도
       const email = instagramId.includes('@') ? instagramId : `${instagramId}@onfans.club`;
-      
       const { data: { session }, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -47,12 +70,7 @@ export default function Login() {
       }
     } catch (err: any) {
       console.error('Login error:', err);
-      // 구체적인 오류 메시지 표시
-      if (err.message === 'Invalid login credentials' || err.message === 'invalid login credentials' || err.message.includes('credentials')) {
-        setError('아이디 또는 비밀번호가 틀렸습니다 or 승인 대기 중입니다.');
-      } else {
-        setError('아이디 또는 비밀번호가 틀렸습니다 or 승인 대기 중입니다.');
-      }
+      setError('아이디 또는 비밀번호가 틀렸습니다.');
     } finally {
       setIsLoggingIn(false);
     }

@@ -10,6 +10,22 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        const isAdminRoute = window.location.pathname.startsWith('/admin');
+        
+        // 1. 로컬스토리지 세션 확인 (우회 로그인)
+        if (isAdminRoute && localStorage.getItem('adminSession') === 'true') {
+          setIsAuthenticated(true);
+          setLoading(false);
+          return;
+        }
+        
+        if (!isAdminRoute && localStorage.getItem('seller_data')) {
+          setIsAuthenticated(true);
+          setLoading(false);
+          return;
+        }
+
+        // 2. 기존 Supabase Auth 세션 확인
         const { data: { session } } = await supabase.auth.getSession();
         
         if (!session) {
@@ -18,8 +34,6 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        // 관리자 페이지 접근 시 권한 체크 (@onfans.club 도메인 이메일만 허용)
-        const isAdminRoute = window.location.pathname.startsWith('/admin');
         const userEmail = session.user.email || '';
         
         if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
@@ -40,12 +54,23 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
     // 로그인 상태 변화 실시간 감지
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const isAdminRoute = window.location.pathname.startsWith('/admin');
+      
+      // 로컬 세션이 있으면 상태를 유지
+      if (isAdminRoute && localStorage.getItem('adminSession') === 'true') {
+        setIsAuthenticated(true);
+        return;
+      }
+      if (!isAdminRoute && localStorage.getItem('seller_data')) {
+        setIsAuthenticated(true);
+        return;
+      }
+
       if (!session) {
         setIsAuthenticated(false);
         return;
       }
 
-      const isAdminRoute = window.location.pathname.startsWith('/admin');
       const userEmail = session.user.email || '';
 
       if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
