@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Loader2, CheckCircle2, UserCheck, ShieldAlert, Sparkles, User, Mail } from 'lucide-react';
+import { Loader2, CheckCircle2, UserCheck, ShieldAlert, Sparkles, User, Mail, Trash2 } from 'lucide-react';
 
 interface Influencer {
   id: string;
@@ -79,6 +79,30 @@ export function InfluencerManagement() {
     } catch (err: any) {
       console.error('Error approving influencer:', err);
       alert(`승인 중 오류 발생: ${err.message}`);
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('정말로 이 셀러를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+    
+    setProcessingId(id);
+    try {
+      if (import.meta.env.VITE_SUPABASE_URL) {
+        const { error } = await supabase
+          .from('influencers')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+      }
+      
+      alert('셀러가 삭제되었습니다.');
+      fetchInfluencers();
+    } catch (err: any) {
+      console.error('Error deleting influencer:', err);
+      alert(`삭제 중 오류 발생: ${err.message}`);
     } finally {
       setProcessingId(null);
     }
@@ -200,22 +224,38 @@ export function InfluencerManagement() {
                     )}
                   </td>
                   <td className="px-8 py-6 text-right">
-                    {influencer.status === 'pending' && (
+                    <div className="flex justify-end gap-3">
+                      {influencer.status === 'pending' && (
+                        <button 
+                          onClick={() => handleApprove(influencer.id)}
+                          disabled={processingId === influencer.id}
+                          className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-xs font-black text-black transition-all hover:bg-brand-500 hover:text-white hover:shadow-premium-lg active:scale-95 disabled:opacity-50"
+                        >
+                          {processingId === influencer.id ? (
+                            <Loader2 size={16} className="animate-spin" />
+                          ) : (
+                            <>
+                              <UserCheck size={16} />
+                              계정 승인
+                            </>
+                          )}
+                        </button>
+                      )}
                       <button 
-                        onClick={() => handleApprove(influencer.id)}
+                        onClick={() => handleDelete(influencer.id)}
                         disabled={processingId === influencer.id}
-                        className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-xs font-black text-black transition-all hover:bg-brand-500 hover:text-white hover:shadow-premium-lg active:scale-95 disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-2.5 text-xs font-black text-red-400 transition-all hover:bg-red-500 hover:text-white hover:shadow-premium-lg active:scale-95 disabled:opacity-50"
                       >
                         {processingId === influencer.id ? (
                           <Loader2 size={16} className="animate-spin" />
                         ) : (
                           <>
-                            <UserCheck size={16} />
-                            계정 승인
+                            <Trash2 size={16} />
+                            삭제
                           </>
                         )}
                       </button>
-                    )}
+                    </div>
                   </td>
                 </tr>
               ))

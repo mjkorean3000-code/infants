@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Edit2, Loader2, X, Check, Package, Link, Users, Sparkles, Plus } from 'lucide-react';
+import { Edit2, Loader2, X, Check, Package, Link, Users, Sparkles, Plus, Trash2 } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -159,6 +159,27 @@ export function ProductManagement() {
     }
   };
 
+  const handleDeleteProduct = async (id: string) => {
+    if (!confirm('정말로 이 상품을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+    
+    try {
+      if (import.meta.env.VITE_SUPABASE_URL) {
+        const { error } = await supabase
+          .from('products')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+      }
+      
+      alert('상품이 삭제되었습니다.');
+      fetchData();
+    } catch (err: any) {
+      console.error('Error deleting product:', err);
+      alert(`삭제 중 오류 발생: ${err.message}`);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center glass rounded-[2rem]">
@@ -288,6 +309,13 @@ export function ProductManagement() {
                       >
                         <Edit2 size={14} />
                         정보 수정
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteProduct(product.id)}
+                        className="inline-flex items-center gap-2 rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-2.5 text-xs font-black text-red-400 transition-all hover:bg-red-500 hover:text-white hover:shadow-premium-md"
+                      >
+                        <Trash2 size={14} />
+                        삭제
                       </button>
                     </div>
                   </td>

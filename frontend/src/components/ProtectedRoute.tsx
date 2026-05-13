@@ -8,19 +8,26 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 환경변수가 없거나, 테스트용 강제 로그인을 한 경우 무조건 허용
-    if (import.meta.env.VITE_SUPABASE_URL === undefined || localStorage.getItem('mock_auth')) {
-      setTimeout(() => {
-        setIsAuthenticated(true);
-        setLoading(false);
-      }, 500);
-      return;
-    }
-
     const checkAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        setIsAuthenticated(!!session);
+        
+        if (!session) {
+          setIsAuthenticated(false);
+          setLoading(false);
+          return;
+        }
+
+        // 관리자 페이지 접근 시 권한 체크 (@onfans.club 도메인 이메일만 허용)
+        const isAdminRoute = window.location.pathname.startsWith('/admin');
+        const userEmail = session.user.email || '';
+        
+        if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
+          console.warn('관리자 권한이 없는 계정입니다:', userEmail);
+          setIsAuthenticated(false);
+        } else {
+          setIsAuthenticated(true);
+        }
       } catch (error) {
         console.error('인증 확인 중 오류:', error);
         setIsAuthenticated(false);
@@ -33,7 +40,19 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
     // 로그인 상태 변화 실시간 감지
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
+      if (!session) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      const isAdminRoute = window.location.pathname.startsWith('/admin');
+      const userEmail = session.user.email || '';
+
+      if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
+        setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
+      }
     });
 
     return () => {

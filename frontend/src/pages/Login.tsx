@@ -13,7 +13,13 @@ export default function Login() {
   useEffect(() => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) navigate('/dashboard');
+      if (session) {
+        if (session.user.email?.endsWith('@onfans.club')) {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
+      }
     };
     checkUser();
   }, [navigate]);
@@ -27,15 +33,26 @@ export default function Login() {
       // 입력값이 이메일 형식이면 그대로 사용, 아니면 @onfans.club을 붙임
       const email = instagramId.includes('@') ? instagramId : `${instagramId}@onfans.club`;
       
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: { session }, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
-      navigate('/dashboard');
+      
+      if (session?.user.email?.endsWith('@onfans.club')) {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err: any) {
-      setError(err.message || '로그인에 실패했습니다.');
+      console.error('Login error:', err);
+      // 구체적인 오류 메시지 표시
+      if (err.message === 'Invalid login credentials' || err.message === 'invalid login credentials' || err.message.includes('credentials')) {
+        setError('아이디 또는 비밀번호가 틀렸습니다 or 승인 대기 중입니다.');
+      } else {
+        setError('아이디 또는 비밀번호가 틀렸습니다 or 승인 대기 중입니다.');
+      }
     } finally {
       setIsLoggingIn(false);
     }
