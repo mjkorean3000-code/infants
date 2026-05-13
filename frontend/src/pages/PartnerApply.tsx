@@ -53,27 +53,33 @@ function PartnerApply() {
     }
 
     try {
-      const { error: dbError } = await supabase
-        .from('influencers')
-        .insert([
-          {
-            instagram_id: formData.instagram_id,
-            email: formData.email,
-            phone: formData.phone,
-            category: formData.category,
-            status: 'pending',
-            ...extraData,
-            // 개별 항목 호환성 유지
-            agree_ads_law: true,
-            agree_tax_info: true,
-            agree_no_direct_trade: true,
-            agree_disclaimer: true,
-            agree_ops_guide: true,
-            agree_notification: isNotificationAgreed
-          }
-        ]);
+      const insertData = {
+        instagram_id: formData.instagram_id,
+        email: formData.email,
+        phone: formData.phone,
+        category: formData.category,
+        status: 'pending',
+        ...extraData,
+        agree_ads_law: true,
+        agree_tax_info: true,
+        agree_no_direct_trade: true,
+        agree_disclaimer: true,
+        agree_ops_guide: true,
+        agree_notification: isNotificationAgreed
+      };
 
-      if (dbError) throw dbError;
+      let { error: dbError } = await supabase
+        .from('influencers')
+        .insert([insertData]);
+
+      // DB에 phone, agree_notification 컬럼이 아직 없을 경우 대비한 폴백 처리
+      if (dbError && (dbError.message.includes('column') || dbError.code === 'PGRST204')) {
+        const { phone, agree_notification, ...fallbackData } = insertData as any;
+        const { error: fallbackError } = await supabase.from('influencers').insert([fallbackData]);
+        if (fallbackError) throw fallbackError;
+      } else if (dbError) {
+        throw dbError;
+      }
       setIsSuccess(true);
     } catch (error) {
       console.error('Error submitting application:', error);

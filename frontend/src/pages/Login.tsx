@@ -57,11 +57,8 @@ export default function Login() {
 
       if (error) throw error;
       
-      if (session?.user.email?.endsWith('@onfans.club')) {
-        navigate('/admin');
-      } else {
-        navigate('/dashboard');
-      }
+      // Auth 로그인이 성공했다면 어드민이므로 무조건 /admin 으로 이동
+      navigate('/admin');
     } catch (err: any) {
       console.error('Login error:', err);
       // 구체적인 오류 메시지 표시

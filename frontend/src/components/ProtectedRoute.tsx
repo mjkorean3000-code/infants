@@ -28,15 +28,8 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        // 관리자 페이지 접근 시 권한 체크 (@onfans.club 도메인 이메일만 허용)
-        const userEmail = session.user.email || '';
-        
-        if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
-          console.warn('관리자 권한이 없는 계정입니다:', userEmail);
-          setIsAuthenticated(false);
-        } else {
-          setIsAuthenticated(true);
-        }
+        // 세션이 존재하면(Auth 로그인 성공자) 무조건 어드민/허용으로 처리
+        setIsAuthenticated(true);
       } catch (error) {
         console.error('인증 확인 중 오류:', error);
         setIsAuthenticated(false);
@@ -62,13 +55,8 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      const userEmail = session.user.email || '';
-
-      if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
-        setIsAuthenticated(false);
-      } else {
-        setIsAuthenticated(true);
-      }
+      // 세션 존재 시 허용
+      setIsAuthenticated(true);
     });
 
     return () => {

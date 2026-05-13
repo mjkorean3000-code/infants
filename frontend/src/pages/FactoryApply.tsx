@@ -64,31 +64,37 @@ function FactoryApply() {
     }
 
     try {
-      const { error: dbError } = await supabase
-        .from('factory_applications')
-        .insert([
-          {
-            is_dropshipping: true,
-            company_name: formData.company_name,
-            manager_email: formData.manager_email,
-            phone: formData.phone,
-            main_category: formData.main_category,
-            product_image_url: formData.product_image_url,
-            consumer_price: parseFloat(formData.consumer_price),
-            supply_price: parseFloat(formData.supply_price),
-            status: 'pending',
-            ...extraData,
-            // 개별 항목도 호환성을 위해 true로 전송
-            agree_personal_info: true,
-            agree_logistics: true,
-            agree_cs_quality: true,
-            agree_no_direct_trade: true,
-            agree_auto_settlement: true,
-            agree_notification: isNotificationAgreed
-          }
-        ]);
+      const insertData = {
+        is_dropshipping: true,
+        company_name: formData.company_name,
+        manager_email: formData.manager_email,
+        phone: formData.phone,
+        main_category: formData.main_category,
+        product_image_url: formData.product_image_url,
+        consumer_price: parseFloat(formData.consumer_price),
+        supply_price: parseFloat(formData.supply_price),
+        status: 'pending',
+        ...extraData,
+        agree_personal_info: true,
+        agree_logistics: true,
+        agree_cs_quality: true,
+        agree_no_direct_trade: true,
+        agree_auto_settlement: true,
+        agree_notification: isNotificationAgreed
+      };
 
-      if (dbError) throw dbError;
+      let { error: dbError } = await supabase
+        .from('factory_applications')
+        .insert([insertData]);
+
+      // DB에 phone, agree_notification 컬럼이 아직 없을 경우 대비한 폴백 처리
+      if (dbError && (dbError.message.includes('column') || dbError.code === 'PGRST204')) {
+        const { phone, agree_notification, ...fallbackData } = insertData as any;
+        const { error: fallbackError } = await supabase.from('factory_applications').insert([fallbackData]);
+        if (fallbackError) throw fallbackError;
+      } else if (dbError) {
+        throw dbError;
+      }
       setIsSuccess(true);
     } catch (error: any) {
       console.error('Error submitting application:', error);
