@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck, BarChart3, Users, Quote, ArrowRight } from 'lucide-react';
 
 // Fixed navigate error
 function FactoryApply() {
@@ -153,18 +153,166 @@ function FactoryApply() {
 
       <section className="pt-32 pb-12 px-6 sm:px-12 sm:pt-48">
         <div className="mx-auto max-w-5xl text-center animate-fade-in-up">
-          <h1 className="mb-6 text-[36px] font-black leading-[1.1] tracking-tight text-white sm:text-7xl lg:text-8xl break-keep">
-            수만 명의 셀러가 당신의
-            <span className="block text-gradient mt-2">상품을 기다립니다.</span>
+          <div className="mb-4 inline-flex rounded-full bg-brand-500/10 px-4 py-1.5 text-sm font-bold text-brand-400">
+            공장 파트너 전용
+          </div>
+          <h1 className="mb-6 text-[36px] font-black leading-[1.2] tracking-tight text-white sm:text-7xl lg:text-8xl break-keep">
+            생산만 하세요.<br />
+            <span className="text-gradient mt-2">판매는 온팬즈가 알아서 합니다.</span>
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-surface-400 sm:text-xl font-medium">
-            최고의 상품만 준비하세요. 마케팅과 판매는 온팬즈 파트너 셀러들이 담당합니다.
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-surface-400 sm:text-xl font-medium break-keep">
+            마케팅, CS, 정산, 셀러 관리 — 이제 하나도 직접 안 하셔도 됩니다.<br />상품 정보 등록 한 번으로, 수백 명의 인플루언서가 팬덤에 직접 판매합니다.
           </p>
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            <span className="rounded-full bg-white/5 border border-white/10 px-4 py-2 text-sm font-bold text-surface-300">❌ 마케팅 비용 0원</span>
+            <span className="rounded-full bg-white/5 border border-white/10 px-4 py-2 text-sm font-bold text-surface-300">❌ 재고 리스크 없음</span>
+            <span className="rounded-full bg-white/5 border border-white/10 px-4 py-2 text-sm font-bold text-surface-300">❌ CS 인력 불필요</span>
+            <span className="rounded-full bg-brand-500/10 border border-brand-500/20 px-4 py-2 text-sm font-bold text-brand-400">✅ 확정 주문만 생산·발송</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-20 sm:px-12 animate-fade-in duration-700">
+        <div className="mx-auto max-w-4xl rounded-[2rem] glass p-8 shadow-premium-lg border-white/5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10 gap-8 sm:gap-0">
+            <div className="flex flex-col items-center text-center py-4 sm:py-0">
+              <span className="text-4xl font-black text-white mb-2">5분</span>
+              <span className="text-surface-400 font-medium">입점 신청 완료까지</span>
+            </div>
+            <div className="flex flex-col items-center text-center py-4 sm:py-0">
+              <span className="text-4xl font-black text-white mb-2">0원</span>
+              <span className="text-surface-400 font-medium">초기 비용·월 고정비</span>
+            </div>
+            <div className="flex flex-col items-center text-center py-4 sm:py-0">
+              <span className="text-4xl font-black text-white mb-2">100%</span>
+              <span className="text-surface-400 font-medium">확정 주문 후 발송</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-32 sm:px-12 animate-fade-in-up duration-1000">
+        <div className="mx-auto max-w-5xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
+                <ShoppingBag size={28} />
+              </div>
+              <h3 className="mb-4 text-2xl font-bold text-white">상품 등록만 하면 끝</h3>
+              <p className="text-surface-400 font-medium leading-relaxed">복잡한 쇼핑몰 세팅 없이 상품 정보 입력 한 번으로 수백 개 채널에 동시 노출됩니다.</p>
+            </div>
+            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
+                <BarChart3 size={28} />
+              </div>
+              <h3 className="mb-4 text-2xl font-bold text-white">실시간 주문 대시보드</h3>
+              <p className="text-surface-400 font-medium leading-relaxed">주문이 들어오면 시스템이 자동으로 데이터를 전달합니다. 엑셀 정리도, 별도 연락도 없습니다.</p>
+            </div>
+            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
+                <Users size={28} />
+              </div>
+              <h3 className="mb-4 text-2xl font-bold text-white">인플루언서 팬덤 직공략</h3>
+              <p className="text-surface-400 font-medium leading-relaxed">이미 신뢰가 쌓인 팬덤 채널을 통한 판매라 광고비 없이도 전환율이 높습니다.</p>
+            </div>
+            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
+                <ShieldCheck size={28} />
+              </div>
+              <h3 className="mb-4 text-2xl font-bold text-white">직거래 방지 구조</h3>
+              <p className="text-surface-400 font-medium leading-relaxed">자동 정산 파이프라인으로 셀러와의 직거래를 시스템이 차단합니다. 안정적인 수익 구조를 보장합니다.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-32 sm:px-12">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-black text-white sm:text-4xl">입점 전 vs 후, 공장의 하루</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="rounded-[2rem] bg-red-950/20 border border-red-500/20 p-10">
+              <div className="mb-6 inline-flex rounded-full bg-red-500/20 px-4 py-2 text-sm font-bold text-red-400">
+                지금까지
+              </div>
+              <ul className="space-y-4">
+                <li className="flex items-center gap-3 text-surface-300 font-medium">
+                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 직접 마케팅 채널 운영
+                </li>
+                <li className="flex items-center gap-3 text-surface-300 font-medium">
+                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 인플루언서 개별 협상
+                </li>
+                <li className="flex items-center gap-3 text-surface-300 font-medium">
+                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 정산 엑셀 수작업
+                </li>
+                <li className="flex items-center gap-3 text-surface-300 font-medium">
+                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 반품·CS 직접 대응
+                </li>
+              </ul>
+            </div>
+            
+            <div className="rounded-[2rem] bg-brand-900/20 border border-brand-500/30 p-10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+              <div className="mb-6 inline-flex rounded-full bg-brand-500/20 px-4 py-2 text-sm font-bold text-brand-400 relative z-10">
+                온팬즈 입점 후
+              </div>
+              <ul className="space-y-4 relative z-10">
+                <li className="flex items-center gap-3 text-white font-bold">
+                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 상품 정보 한 번 등록
+                </li>
+                <li className="flex items-center gap-3 text-white font-bold">
+                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 주문 알림 확인 후 발송
+                </li>
+                <li className="flex items-center gap-3 text-white font-bold">
+                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 정산 자동 리포트 수령
+                </li>
+                <li className="flex items-center gap-3 text-white font-bold">
+                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 생산·품질에만 집중
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-32 sm:px-12">
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-[2.5rem] glass p-10 sm:p-14 text-center border-l-4 border-brand-500 shadow-premium-xl">
+            <Quote className="mx-auto mb-6 text-brand-500/30" size={48} />
+            <p className="mb-8 text-xl sm:text-2xl font-black text-white leading-relaxed break-keep">
+              "공장은 잘 만드는 게 본업입니다. 팔리는 건 온팬즈가 알아서 해준다면, 저희는 더 잘 만드는 데만 집중할 수 있습니다."
+            </p>
+            <p className="text-surface-400 font-bold">— 온팬즈 파트너 공장 대표 피드백</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-32 sm:px-12">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="mb-6 text-brand-400 font-bold animate-pulse">
+            지금 입점하면 초기 노출 우선권이 주어집니다. 선착순 마감.
+          </p>
+          <button 
+            onClick={() => {
+              document.getElementById('apply-form')?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-500 px-10 py-5 text-lg font-black text-white shadow-brand-500/20 shadow-premium-xl transition-all hover:bg-brand-600 hover:scale-105 active:scale-95 mb-6"
+          >
+            5분 만에 공장 입점 신청하기 <ArrowRight size={20} />
+          </button>
+          <div className="flex items-center justify-center gap-4 text-sm font-medium text-surface-500">
+            <span>별도 계약 없음</span>
+            <span className="w-1 h-1 rounded-full bg-surface-700" />
+            <span>초기 비용 없음</span>
+            <span className="w-1 h-1 rounded-full bg-surface-700" />
+            <span>언제든 탈퇴 가능</span>
+          </div>
         </div>
       </section>
 
       <section className="px-6 pb-32 sm:px-12 animate-fade-in duration-700">
-        <div className="mx-auto max-w-2xl rounded-[2.5rem] bg-white p-8 sm:p-14 shadow-premium-xl relative overflow-hidden">
+        <div id="apply-form" className="scroll-mt-32 mx-auto max-w-2xl rounded-[2.5rem] bg-white p-8 sm:p-14 shadow-premium-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl" />
           
           <div className="mb-10 flex items-center justify-between border-b border-surface-100 pb-8">
