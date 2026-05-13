@@ -14,6 +14,7 @@ function FactoryApply() {
   const [formData, setFormData] = useState({
     company_name: '',
     manager_email: '',
+    phone: '',
     main_category: 'fashion',
     product_image_url: '',
     consumer_price: '',
@@ -21,6 +22,7 @@ function FactoryApply() {
   });
 
   const [isAgreed, setIsAgreed] = useState(false);
+  const [isNotificationAgreed, setIsNotificationAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -40,8 +42,8 @@ function FactoryApply() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isAgreed) {
-      alert('필수 약관에 동의해야 신청이 가능합니다.');
+    if (!isAgreed || !isNotificationAgreed) {
+      alert('필수 약관 및 알림 수신에 모두 동의해야 신청이 가능합니다.');
       return;
     }
     setIsSubmitting(true);
@@ -69,6 +71,7 @@ function FactoryApply() {
             is_dropshipping: true,
             company_name: formData.company_name,
             manager_email: formData.manager_email,
+            phone: formData.phone,
             main_category: formData.main_category,
             product_image_url: formData.product_image_url,
             consumer_price: parseFloat(formData.consumer_price),
@@ -80,7 +83,8 @@ function FactoryApply() {
             agree_logistics: true,
             agree_cs_quality: true,
             agree_no_direct_trade: true,
-            agree_auto_settlement: true
+            agree_auto_settlement: true,
+            agree_notification: isNotificationAgreed
           }
         ]);
 
@@ -424,6 +428,21 @@ function FactoryApply() {
                 </div>
 
                 <div className="flex flex-col gap-2.5">
+                  <label htmlFor="phone" className="text-sm font-bold text-surface-900 ml-1">담당자 휴대폰 번호</label>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    required
+                    placeholder="010-1234-5678"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full rounded-2xl border-2 border-surface-100 bg-surface-50 px-5 py-4 font-bold text-surface-950 transition-all focus:border-surface-950 focus:bg-white focus:outline-none placeholder:text-surface-300"
+                  />
+                  <span className="text-[12px] text-brand-500 ml-1 font-bold">💡 정확한 번호를 입력하지 않으실 경우, 주문 및 정산 알림을 받지 못해 불이익이 발생할 수 있습니다.</span>
+                </div>
+
+                <div className="flex flex-col gap-2.5">
                   <label htmlFor="main_category" className="text-sm font-bold text-surface-900 ml-1">주력 제품군</label>
                   <div className="relative">
                     <select 
@@ -500,7 +519,13 @@ function FactoryApply() {
                       개인정보 위수탁: 배송 목적의 고객 정보 안전 취급 및 파기<br />
                       물류 및 CS: 24시간 이내 송장 등록(드롭쉬핑) 및 제품 하자 시 교환/환불 책임 부담<br />
                       거래 질서: 플랫폼 우회 직거래 금지 및 위반 시 영구 제명<br />
-                      정산: 시스템 자동 산출 로직에 따른 대금 정산 수용
+                      정산: 시스템 자동 산출 로직에 따른 대금 정산 수용<br /><br />
+                      [알림톡 발송을 위한 개인정보 수집 및 이용]<br />
+                      - 수집 항목: 담당자 휴대폰 번호<br />
+                      - 이용 목적: 신규 주문 발생 시 실시간 알림, 셀러 매칭 및 샘플 요청 정보 전달, 정산 리포트 발행 및 대금 지급 안내 (알림톡 불가 시 문자 대체 발송)<br />
+                      - 보유 및 이용 기간: 서비스 이용 종료(입점 해지) 시까지 또는 법정 보유 기간까지<br /><br />
+                      [영업 양도 등에 따른 개인정보의 이전]<br />
+                      회사는 합병, 분할 또는 영업양도 등으로 개인정보를 이전하는 경우, 정보주체에게 이전 사실을 통지하고 관련 법령을 준수합니다.
                     </div>
                   </div>
 
@@ -515,12 +540,24 @@ function FactoryApply() {
                       [필수] 온팬즈 파트너 입점 약관 및 개인정보 처리 위탁 전체 동의
                     </span>
                   </div>
+
+                  <div 
+                    onClick={() => setIsNotificationAgreed(!isNotificationAgreed)}
+                    className={`flex items-start gap-3 rounded-2xl p-5 border-2 transition-all cursor-pointer ${isNotificationAgreed ? 'border-brand-500 bg-brand-500/5' : 'border-surface-100 bg-surface-50 hover:border-surface-200'}`}
+                  >
+                    <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isNotificationAgreed ? 'border-brand-500 bg-brand-500' : 'border-surface-300'}`}>
+                      {isNotificationAgreed && <CheckCircle2 size={14} className="text-white" />}
+                    </div>
+                    <span className={`text-sm font-bold ${isNotificationAgreed ? 'text-brand-500' : 'text-surface-900'}`}>
+                      [필수] 서비스 이용에 필요한 정보성 알림(주문, 정산 등)을 카카오톡으로 수신하는 것에 동의합니다
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <button 
                 type="submit" 
-                disabled={isSubmitting || !isAgreed}
+                disabled={isSubmitting || !isAgreed || !isNotificationAgreed}
                 className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-20 disabled:hover:shadow-none"
               >
                 {isSubmitting ? (

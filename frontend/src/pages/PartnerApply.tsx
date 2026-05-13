@@ -10,10 +10,12 @@ function PartnerApply() {
   const [formData, setFormData] = useState({
     instagram_id: '',
     email: '',
+    phone: '',
     category: 'fashion'
   });
   const [userIp, setUserIp] = useState('');
   const [isAgreed, setIsAgreed] = useState(false);
+  const [isNotificationAgreed, setIsNotificationAgreed] = useState(false);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -28,8 +30,8 @@ function PartnerApply() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isAgreed) {
-      alert('필수 약관에 동의해야 신청이 가능합니다.');
+    if (!isAgreed || !isNotificationAgreed) {
+      alert('필수 약관 및 알림 수신에 모두 동의해야 신청이 가능합니다.');
       return;
     }
     setIsSubmitting(true);
@@ -57,6 +59,7 @@ function PartnerApply() {
           {
             instagram_id: formData.instagram_id,
             email: formData.email,
+            phone: formData.phone,
             category: formData.category,
             status: 'pending',
             ...extraData,
@@ -65,7 +68,8 @@ function PartnerApply() {
             agree_tax_info: true,
             agree_no_direct_trade: true,
             agree_disclaimer: true,
-            agree_ops_guide: true
+            agree_ops_guide: true,
+            agree_notification: isNotificationAgreed
           }
         ]);
 
@@ -324,6 +328,21 @@ function PartnerApply() {
             </div>
 
             <div className="flex flex-col gap-2.5">
+              <label htmlFor="phone" className="text-sm font-bold text-surface-900 ml-1">휴대폰 번호</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="phone" 
+                required
+                placeholder="010-1234-5678"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full rounded-2xl border-2 border-surface-100 bg-surface-50 px-5 py-4 font-bold text-surface-950 transition-all focus:border-surface-950 focus:bg-white focus:outline-none placeholder:text-surface-300"
+              />
+              <span className="text-[12px] text-brand-500 ml-1 font-bold">💡 정확한 번호를 입력하지 않으실 경우, 주문 및 정산 알림을 받지 못해 불이익이 발생할 수 있습니다.</span>
+            </div>
+
+            <div className="flex flex-col gap-2.5">
               <label htmlFor="category" className="text-sm font-bold text-surface-900 ml-1">주요 활동 카테고리</label>
               <div className="relative">
                 <select 
@@ -357,7 +376,13 @@ function PartnerApply() {
                   광고법 준수: 경제적 대가 관계 표기 의무화 및 허위 광고 시 본인 책임 서약<br />
                   정산 및 세무: 수익금 지급 및 원천세(3.3%) 신고를 위한 신분증/계좌 정보 활용 동의<br />
                   직거래 금지: 플랫폼 승인 없는 제조사 개별 연락 및 우회 거래 시도 금지<br />
-                  면책 확인: 플랫폼은 시스템 중개자이며 배송/품질 책임은 제조사에 있음을 확인
+                  면책 확인: 플랫폼은 시스템 중개자이며 배송/품질 책임은 제조사에 있음을 확인<br /><br />
+                  [알림톡 발송을 위한 개인정보 수집 및 이용]<br />
+                  - 수집 항목: 휴대폰 번호<br />
+                  - 이용 목적: 선정된 캠페인의 샘플 배송 시작 알림, 판매 실적에 따른 실시간 수익 발생 알림, 최종 수익금 정산 완료 및 세금계산서 발행 안내 (알림톡 불가 시 문자 대체 발송)<br />
+                  - 보유 및 이용 기간: 회원 탈퇴 시까지 또는 법정 보유 기간까지<br /><br />
+                  [영업 양도 등에 따른 개인정보의 이전]<br />
+                  회사는 합병, 분할 또는 영업양도 등으로 개인정보를 이전하는 경우, 정보주체에게 이전 사실을 통지하고 관련 법령을 준수합니다.
                 </div>
               </div>
 
@@ -372,11 +397,23 @@ function PartnerApply() {
                   [필수] 온팬즈 셀러 이용약관 및 개인정보 수집·이용 전체 동의
                 </span>
               </div>
+
+              <div 
+                onClick={() => setIsNotificationAgreed(!isNotificationAgreed)}
+                className={`flex items-start gap-3 rounded-2xl p-5 border-2 transition-all cursor-pointer ${isNotificationAgreed ? 'border-brand-500 bg-brand-500/5' : 'border-surface-100 bg-surface-50 hover:border-surface-200'}`}
+              >
+                <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all ${isNotificationAgreed ? 'border-brand-500 bg-brand-500' : 'border-surface-300'}`}>
+                  {isNotificationAgreed && <CheckCircle2 size={14} className="text-white" />}
+                </div>
+                <span className={`text-sm font-bold ${isNotificationAgreed ? 'text-brand-500' : 'text-surface-900'}`}>
+                  [필수] 서비스 이용에 필요한 정보성 알림(주문, 정산 등)을 카카오톡으로 수신하는 것에 동의합니다
+                </span>
+              </div>
             </div>
 
             <button 
               type="submit" 
-              disabled={isSubmitting || !isAgreed}
+              disabled={isSubmitting || !isAgreed || !isNotificationAgreed}
               className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-950 py-5 font-bold text-white transition-all hover:bg-black hover:shadow-premium-lg active:scale-[0.98] disabled:opacity-20 disabled:hover:shadow-none"
             >
               {isSubmitting ? (
