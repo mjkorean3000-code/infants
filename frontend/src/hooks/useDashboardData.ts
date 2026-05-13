@@ -25,36 +25,16 @@ export interface DashboardData {
   loading: boolean;
 }
 
-// 목업 데이터
-const MOCK_DATA: DashboardData = {
-  influencer: {
-    id: 'mock-inf-1',
-    name: '테스트 인플루언서',
-    tracking_link: 'https://onfans.com/r/test-code-123',
-    settlement_rate: 15.0,
-    category: 'fashion'
-  },
+// 빈 데이터로 대체 (거짓 정보 제거)
+const EMPTY_DATA: DashboardData = {
+  influencer: null,
   summary: {
-    totalSalesMonth: 12500000,
-    estimatedProfit: 1875000,
-    newOrdersToday: 32,
+    totalSalesMonth: 0,
+    estimatedProfit: 0,
+    newOrdersToday: 0,
   },
-  revenueChart: [
-    { date: '04/27', revenue: 450000 },
-    { date: '04/28', revenue: 600000 },
-    { date: '04/29', revenue: 520000 },
-    { date: '04/30', revenue: 800000 },
-    { date: '05/01', revenue: 1100000 },
-    { date: '05/02', revenue: 950000 },
-    { date: '05/03', revenue: 1250000 },
-  ],
-  recentOrders: [
-    { id: '1', productName: '프리미엄 무선 이어폰 PRO', status: 'delivered', orderDate: '2026-05-03T10:23:00Z', amount: 89000 },
-    { id: '2', productName: '고속 충전 보조배터리 20000mAh', status: 'shipping', orderDate: '2026-05-03T09:15:00Z', amount: 35000 },
-    { id: '3', productName: '스마트 워치 스트랩 세트', status: 'preparing', orderDate: '2026-05-02T18:45:00Z', amount: 22000 },
-    { id: '4', productName: '프리미엄 무선 이어폰 PRO', status: 'paid', orderDate: '2026-05-02T14:20:00Z', amount: 89000 },
-    { id: '5', productName: '블루투스 미니 스피커', status: 'pending', orderDate: '2026-05-02T11:05:00Z', amount: 45000 },
-  ],
+  revenueChart: [],
+  recentOrders: [],
   loading: false,
 };
 
@@ -68,9 +48,9 @@ export const useDashboardData = () => {
   });
 
   const fetchData = async () => {
-    // 환경변수가 없으면 목업 데이터 사용 (로컬 테스트용)
+    // 환경변수가 없으면 빈 데이터 사용 (로컬 테스트용)
     if (import.meta.env.VITE_SUPABASE_URL === undefined) {
-      setTimeout(() => setData(MOCK_DATA), 500); // 딜레이 시뮬레이션
+      setTimeout(() => setData(EMPTY_DATA), 500);
       return;
     }
 
@@ -148,7 +128,7 @@ export const useDashboardData = () => {
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
-      setData(MOCK_DATA);
+      setData(EMPTY_DATA);
     }
   };
 

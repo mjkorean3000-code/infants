@@ -172,6 +172,7 @@ export function ProductManagement() {
         if (error) throw error;
       }
       
+      setProducts(prev => prev.filter(p => p.id !== id));
       alert('상품이 삭제되었습니다.');
       fetchData();
     } catch (err: any) {

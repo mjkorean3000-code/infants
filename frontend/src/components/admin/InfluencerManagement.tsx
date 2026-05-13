@@ -98,6 +98,7 @@ export function InfluencerManagement() {
         if (error) throw error;
       }
       
+      setInfluencers(prev => prev.filter(i => i.id !== id));
       alert('셀러가 삭제되었습니다.');
       fetchInfluencers();
     } catch (err: any) {
