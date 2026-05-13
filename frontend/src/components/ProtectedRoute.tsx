@@ -29,7 +29,6 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
         }
 
         // 관리자 페이지 접근 시 권한 체크 (@onfans.club 도메인 이메일만 허용)
-        const isAdminRoute = window.location.pathname.startsWith('/admin');
         const userEmail = session.user.email || '';
         
         if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
@@ -63,7 +62,6 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      const isAdminRoute = window.location.pathname.startsWith('/admin');
       const userEmail = session.user.email || '';
 
       if (isAdminRoute && !userEmail.endsWith('@onfans.club')) {
