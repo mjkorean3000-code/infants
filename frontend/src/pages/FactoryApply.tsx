@@ -320,8 +320,8 @@ function FactoryApply() {
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-surface-900 text-[10px] text-white">1</span>
                   배송 및 공급 방식 확인
                 </h3>
-                <p className="text-surface-600 leading-relaxed font-medium">
-                  온팬즈는 셀러가 판매한 제품을 공급사가 직접 고객에게 배송하는 <span className="text-brand-600 font-black">위탁 배송(드랍쉬핑)</span> 방식으로 운영됩니다. 가능하신가요?
+                <p className="text-surface-600 leading-relaxed font-medium break-keep">
+                  온팬즈는 주문 발생 시 공급사에서 고객에게 <span className="text-brand-600 font-black">낱개 단위로 개별 발송(택배 발송)</span>하는 방식으로 운영됩니다. (자체 물류 또는 외부 풀필먼트 활용 모두 가능) 이 방식의 업무 이행이 가능하신가요?
                 </p>
               </div>
               
