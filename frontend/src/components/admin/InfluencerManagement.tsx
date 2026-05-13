@@ -44,8 +44,8 @@ export function InfluencerManagement() {
       }
       
       const [influencersRes, productsRes] = await Promise.all([
-        supabase.from('influencers').select('*').order('created_at', { ascending: false }),
-        supabase.from('products').select('id, category, assigned_influencer_ids')
+        supabase.from('influencers').select('*').neq('status', 'deleted').order('created_at', { ascending: false }),
+        supabase.from('products').select('id, category, assigned_influencer_ids').neq('status', 'deleted')
       ]);
         
       if (influencersRes.error) throw influencersRes.error;
@@ -90,9 +90,10 @@ export function InfluencerManagement() {
     setProcessingId(id);
     try {
       if (import.meta.env.VITE_SUPABASE_URL) {
+        // RLS로 인해 DELETE가 막힌 경우를 우회하기 위한 소프트 삭제(Soft Delete)
         const { error } = await supabase
           .from('influencers')
-          .delete()
+          .update({ status: 'deleted' })
           .eq('id', id);
 
         if (error) throw error;
