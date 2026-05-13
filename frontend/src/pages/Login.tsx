@@ -66,9 +66,9 @@ export default function Login() {
       console.error('Login error:', err);
       // 구체적인 오류 메시지 표시
       if (err.message === 'Invalid login credentials' || err.message === 'invalid login credentials' || err.message.includes('credentials')) {
-        setError('아이디 또는 비밀번호가 틀렸습니다 or 승인 대기 중입니다.');
+        setError('아이디,비번이 틀렸습니다');
       } else {
-        setError('아이디 또는 비밀번호가 틀렸습니다 or 승인 대기 중입니다.');
+        setError('아이디,비번이 틀렸습니다');
       }
     } finally {
       setIsLoggingIn(false);

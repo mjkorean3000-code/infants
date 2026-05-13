@@ -97,7 +97,7 @@ function PartnerApply() {
           </div>
           <h2 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-5xl">입점 신청 완료!</h2>
           <p className="mb-10 max-w-md text-surface-400 font-medium text-lg leading-relaxed">
-            파트너 신청이 성공적으로 접수되었습니다. 담당자가 영업일 기준 1~2일 내에 이메일 및 인스타그램 DM으로 연락드리겠습니다.
+            파트너 신청이 성공적으로 접수되었습니다. 담당자가 인스타그램 DM으로 비밀번호 발급해드리겠습니다.
           </p>
           <div className="rounded-full bg-white/5 border border-white/10 px-10 py-5 text-sm font-bold text-white/40 shadow-premium-sm">
             이 창을 닫아주세요.
