@@ -4,6 +4,7 @@ import { RevenueChart } from '../components/RevenueChart';
 import { RecentOrders } from '../components/RecentOrders';
 import { ProductCatalog } from '../components/ProductCatalog';
 import { Loader2 } from 'lucide-react';
+import { Footer } from '../components/Footer';
 
 function SellerDashboard() {
   const { influencer, summary, revenueChart, recentOrders, loading } = useDashboardData();
@@ -65,6 +66,7 @@ function SellerDashboard() {
           <ProductCatalog influencer={influencer} />
         </div>
       </div>
+      <Footer />
     </div>
   );
 

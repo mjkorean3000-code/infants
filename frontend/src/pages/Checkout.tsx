@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { CreditCard, CheckCircle2, ChevronLeft, Loader2, Package, Truck } from 'lucide-react';
+import { Footer } from '../components/Footer';
 
 declare global {
   interface Window {
@@ -288,6 +289,8 @@ export default function Checkout() {
           {orderData.total_amount.toLocaleString()}원 결제하기
         </button>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

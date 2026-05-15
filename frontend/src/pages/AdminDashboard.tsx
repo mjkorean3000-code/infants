@@ -1,6 +1,7 @@
 import { InfluencerManagement } from '../components/admin/InfluencerManagement';
 import { ProductManagement } from '../components/admin/ProductManagement';
 import { Loader2 } from 'lucide-react';
+import { Footer } from '../components/Footer';
 import { useState } from 'react';
 
 function AdminDashboard() {
@@ -44,6 +45,7 @@ function AdminDashboard() {
           <ProductManagement />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

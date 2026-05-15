@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ChevronLeft, ChevronRight, Minus, Plus, ShoppingBag, Loader2, Share2, ShieldCheck, Sparkles } from 'lucide-react';
+import { Footer } from '../components/Footer';
 
 interface ProductData {
   id: string;
@@ -317,6 +318,7 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
+      <Footer />
 
       {/* 하단 구매 버튼 - 모바일 최적화 (항상 고정) */}
       <div className="fixed bottom-0 left-0 z-50 w-full bg-gradient-to-t from-surface-950 via-surface-950 to-transparent p-6 pb-10">

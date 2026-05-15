@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { CheckCircle2, ChevronRight, Loader2, XCircle, ShoppingBag, ShieldCheck, BarChart3, Users, ArrowRight } from 'lucide-react';
+import { Footer } from '../components/Footer';
 
 // Fixed navigate error
 function FactoryApply() {
@@ -580,6 +581,7 @@ function FactoryApply() {
           )}
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

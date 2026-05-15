@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { AtSign, Loader2 } from 'lucide-react';
+import { Footer } from '../components/Footer';
 
 export default function Login() {
   const [instagramId, setInstagramId] = useState('');
@@ -135,6 +136,7 @@ export default function Login() {
         </p>
       </div>
     </div>
+    <Footer />
   );
 }
 // build trigger Wed May 13 17:10:10 KST 2026

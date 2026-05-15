@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Package, Truck, Wallet, CheckCircle2, ChevronRight, Loader2, ShieldCheck, XCircle, BarChart3, ArrowRight } from 'lucide-react';
+import { Footer } from '../components/Footer';
 
 // Fixed navigate error
 function PartnerApply() {
@@ -435,6 +436,7 @@ function PartnerApply() {
           </form>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
