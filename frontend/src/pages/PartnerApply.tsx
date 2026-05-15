@@ -169,19 +169,19 @@ function PartnerApply() {
       </section>
 
       <section className="px-6 pb-20 sm:px-12 animate-fade-in duration-700">
-        <div className="mx-auto max-w-4xl rounded-[2rem] glass p-8 shadow-premium-lg border-white/5">
-          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10 gap-8 sm:gap-0">
-            <div className="flex flex-col items-center text-center py-4 sm:py-0">
-              <span className="text-4xl font-black text-white mb-2">3분</span>
-              <span className="text-surface-400 font-medium">입점 신청 완료까지</span>
+        <div className="mx-auto max-w-4xl rounded-[2rem] glass p-5 shadow-premium-lg border-white/5">
+          <div className="grid grid-cols-3 divide-x divide-white/10">
+            <div className="flex flex-col items-center text-center px-2 py-3">
+              <span className="text-2xl sm:text-4xl font-black text-white mb-1">3분</span>
+              <span className="text-surface-400 font-medium text-[11px] sm:text-base leading-tight">입점 신청 완료</span>
             </div>
-            <div className="flex flex-col items-center text-center py-4 sm:py-0">
-              <span className="text-4xl font-black text-white mb-2">0원</span>
-              <span className="text-surface-400 font-medium">가입비·유지비</span>
+            <div className="flex flex-col items-center text-center px-2 py-3">
+              <span className="text-2xl sm:text-4xl font-black text-white mb-1">0원</span>
+              <span className="text-surface-400 font-medium text-[11px] sm:text-base leading-tight">가입비·유지비</span>
             </div>
-            <div className="flex flex-col items-center text-center py-4 sm:py-0">
-              <span className="text-4xl font-black text-white mb-2">15%~</span>
-              <span className="text-surface-400 font-medium">평균 판매 마진율</span>
+            <div className="flex flex-col items-center text-center px-2 py-3">
+              <span className="text-2xl sm:text-4xl font-black text-white mb-1">15%~</span>
+              <span className="text-surface-400 font-medium text-[11px] sm:text-base leading-tight">평균 판매 마진율</span>
             </div>
           </div>
         </div>
@@ -189,34 +189,34 @@ function PartnerApply() {
 
       <section className="px-6 pb-32 sm:px-12 animate-fade-in-up duration-1000">
         <div className="mx-auto max-w-5xl">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <Package size={28} />
+          <div className="grid grid-cols-2 gap-3 sm:gap-6">
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <Package size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">무재고 커머스</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">자본금 없이 시작하세요. 상품 사입부터 보관까지 온팬즈가 해결합니다.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">무재고 커머스</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">자본금 없이 시작하세요. 온팬즈가 해결합니다.</p>
             </div>
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <Truck size={28} />
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <Truck size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">배송/CS 100% 대행</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">골치 아픈 택배 포장과 고객 응대는 제조사와 온팬즈 시스템이 대신합니다.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">배송/CS 100% 대행</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">시스템이 대신합니다.</p>
             </div>
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <BarChart3 size={28} />
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <BarChart3 size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">실시간 데이터 확인</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">대시보드에서 클릭/판매 건수, 예상 수익금 등을 투명하게 실시간으로 확인하세요.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">실시간 데이터 확인</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">예상 수익금을 실시간으로 확인하세요.</p>
             </div>
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <Wallet size={28} />
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <Wallet size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">투명한 자동 정산</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">판매가 완료되면 사전에 약정된 마진율에 따라 수익금이 지정된 계좌로 정산됩니다.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">투명한 자동 정산</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">수익금이 지정 계좌로 정산됩니다.</p>
             </div>
           </div>
         </div>
@@ -227,44 +227,44 @@ function PartnerApply() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-black text-white sm:text-4xl">입점 전 vs 후, 셀러의 하루</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="rounded-[2rem] bg-red-950/20 border border-red-500/20 p-10">
-              <div className="mb-6 inline-flex rounded-full bg-red-500/20 px-4 py-2 text-sm font-bold text-red-400">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6">
+            <div className="rounded-2xl sm:rounded-[2rem] bg-red-950/20 border border-red-500/20 p-4 sm:p-10">
+              <div className="mb-4 sm:mb-6 inline-flex rounded-full bg-red-500/20 px-3 py-1.5 text-xs sm:text-sm font-bold text-red-400">
                 지금까지
               </div>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 직접 동대문 사입
+              <ul className="space-y-2.5 sm:space-y-4">
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 직접 동대문 사입
                 </li>
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 매일 택배 포장/발송
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 매일 택배 포장/발송
                 </li>
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 끊임없는 CS 대응
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 끊임없는 CS 대응
                 </li>
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 재고로 인한 적자
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 재고로 인한 적자
                 </li>
               </ul>
             </div>
             
-            <div className="rounded-[2rem] bg-brand-900/20 border border-brand-500/30 p-10 relative overflow-hidden">
+            <div className="rounded-2xl sm:rounded-[2rem] bg-brand-900/20 border border-brand-500/30 p-4 sm:p-10 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="mb-6 inline-flex rounded-full bg-brand-500/20 px-4 py-2 text-sm font-bold text-brand-400 relative z-10">
+              <div className="mb-4 sm:mb-6 inline-flex rounded-full bg-brand-500/20 px-3 py-1.5 text-xs sm:text-sm font-bold text-brand-400 relative z-10">
                 온팬즈 입점 후
               </div>
-              <ul className="space-y-4 relative z-10">
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 맘에 드는 상품 선택
+              <ul className="space-y-2.5 sm:space-y-4 relative z-10">
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> 맘에 드는 상품 선택
                 </li>
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> SNS에 판매 링크 공유
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> SNS에 판매 링크 공유
                 </li>
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 배송/CS는 시스템이 알아서
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> 배송/CS 자동화
                 </li>
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 수익금만 확인
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> 수익금만 확인
                 </li>
               </ul>
             </div>

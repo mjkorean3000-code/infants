@@ -184,19 +184,19 @@ function FactoryApply() {
       </section>
 
       <section className="px-6 pb-20 sm:px-12 animate-fade-in duration-700">
-        <div className="mx-auto max-w-4xl rounded-[2rem] glass p-8 shadow-premium-lg border-white/5">
-          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10 gap-8 sm:gap-0">
-            <div className="flex flex-col items-center text-center py-4 sm:py-0">
-              <span className="text-4xl font-black text-white mb-2">3분</span>
-              <span className="text-surface-400 font-medium">입점 신청 완료까지</span>
+        <div className="mx-auto max-w-4xl rounded-[2rem] glass p-5 shadow-premium-lg border-white/5">
+          <div className="grid grid-cols-3 divide-x divide-white/10">
+            <div className="flex flex-col items-center text-center px-2 py-3">
+              <span className="text-2xl sm:text-4xl font-black text-white mb-1">3분</span>
+              <span className="text-surface-400 font-medium text-[11px] sm:text-base leading-tight">입점 신청 완료</span>
             </div>
-            <div className="flex flex-col items-center text-center py-4 sm:py-0">
-              <span className="text-4xl font-black text-white mb-2">0원</span>
-              <span className="text-surface-400 font-medium">초기 비용·월 고정비</span>
+            <div className="flex flex-col items-center text-center px-2 py-3">
+              <span className="text-2xl sm:text-4xl font-black text-white mb-1">0원</span>
+              <span className="text-surface-400 font-medium text-[11px] sm:text-base leading-tight">초기·고정비</span>
             </div>
-            <div className="flex flex-col items-center text-center py-4 sm:py-0">
-              <span className="text-4xl font-black text-white mb-2">100%</span>
-              <span className="text-surface-400 font-medium">확정 주문 후 발송</span>
+            <div className="flex flex-col items-center text-center px-2 py-3">
+              <span className="text-2xl sm:text-4xl font-black text-white mb-1">100%</span>
+              <span className="text-surface-400 font-medium text-[11px] sm:text-base leading-tight">확정 후 발송</span>
             </div>
           </div>
         </div>
@@ -204,34 +204,34 @@ function FactoryApply() {
 
       <section className="px-6 pb-32 sm:px-12 animate-fade-in-up duration-1000">
         <div className="mx-auto max-w-5xl">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <ShoppingBag size={28} />
+          <div className="grid grid-cols-2 gap-3 sm:gap-6">
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <ShoppingBag size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">상품 등록만 하면 끝</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">복잡한 쇼핑몰 세팅 없이 상품 정보 입력 한 번으로 수백 개 채널에 동시 노출됩니다.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">상품 등록만 하면 끝</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">복잡한 쇼핑몰 세팅 없이 상품 정보 입력 한 번으로 수백 개 채널에 동시 노출됩니다.</p>
             </div>
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <BarChart3 size={28} />
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <BarChart3 size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">실시간 주문 대시보드</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">주문이 들어오면 시스템이 자동으로 데이터를 전달합니다. 엑셀 정리도, 별도 연락도 없습니다.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">실시간 주문 대시보드</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">주문이 들어오면 시스템이 자동으로 데이터를 전달합니다.</p>
             </div>
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <Users size={28} />
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <Users size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">인플루언서 팬덤 직공략</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">이미 신뢰가 쌓인 팬덤 채널을 통한 판매라 광고비 없이도 전환율이 높습니다.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">인플루언서 팬덤 직공략</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">광고비 없이도 전환율이 높습니다.</p>
             </div>
-            <div className="rounded-[2rem] glass p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
-              <div className="mb-6 inline-flex rounded-2xl bg-brand-500/10 p-4 text-brand-500">
-                <ShieldCheck size={28} />
+            <div className="rounded-2xl sm:rounded-[2rem] glass p-5 sm:p-10 transition-all duration-300 hover:bg-surface-900/60 hover-lift">
+              <div className="mb-3 sm:mb-6 inline-flex rounded-xl sm:rounded-2xl bg-brand-500/10 p-2.5 sm:p-4 text-brand-500">
+                <ShieldCheck size={20} />
               </div>
-              <h3 className="mb-4 text-2xl font-bold text-white">직거래 방지 구조</h3>
-              <p className="text-surface-400 font-medium leading-relaxed">자동 정산 파이프라인으로 셀러와의 직거래를 시스템이 차단합니다. 안정적인 수익 구조를 보장합니다.</p>
+              <h3 className="mb-2 sm:mb-4 text-base sm:text-2xl font-bold text-white leading-tight">직거래 방지 구조</h3>
+              <p className="text-surface-400 font-medium leading-relaxed text-xs sm:text-base">자동 정산으로 직거래를 차단합니다.</p>
             </div>
           </div>
         </div>
@@ -242,44 +242,44 @@ function FactoryApply() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-black text-white sm:text-4xl">입점 전 vs 후, 공장의 하루</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="rounded-[2rem] bg-red-950/20 border border-red-500/20 p-10">
-              <div className="mb-6 inline-flex rounded-full bg-red-500/20 px-4 py-2 text-sm font-bold text-red-400">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6">
+            <div className="rounded-2xl sm:rounded-[2rem] bg-red-950/20 border border-red-500/20 p-4 sm:p-10">
+              <div className="mb-4 sm:mb-6 inline-flex rounded-full bg-red-500/20 px-3 py-1.5 text-xs sm:text-sm font-bold text-red-400">
                 지금까지
               </div>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 직접 마케팅 채널 운영
+              <ul className="space-y-2.5 sm:space-y-4">
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 직접 마케팅 채널 운영
                 </li>
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 인플루언서 개별 협상
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 인플루언서 개별 협상
                 </li>
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 정산 엑셀 수작업
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 정산 엑셀 수작업
                 </li>
-                <li className="flex items-center gap-3 text-surface-300 font-medium">
-                  <XCircle size={20} className="text-red-500/70 shrink-0" /> 반품·CS 직접 대응
+                <li className="flex items-start gap-2 text-surface-300 font-medium text-xs sm:text-base">
+                  <XCircle size={15} className="text-red-500/70 shrink-0 mt-0.5" /> 반품·CS 직접 대응
                 </li>
               </ul>
             </div>
             
-            <div className="rounded-[2rem] bg-brand-900/20 border border-brand-500/30 p-10 relative overflow-hidden">
+            <div className="rounded-2xl sm:rounded-[2rem] bg-brand-900/20 border border-brand-500/30 p-4 sm:p-10 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="mb-6 inline-flex rounded-full bg-brand-500/20 px-4 py-2 text-sm font-bold text-brand-400 relative z-10">
+              <div className="mb-4 sm:mb-6 inline-flex rounded-full bg-brand-500/20 px-3 py-1.5 text-xs sm:text-sm font-bold text-brand-400 relative z-10">
                 온팬즈 입점 후
               </div>
-              <ul className="space-y-4 relative z-10">
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 상품 정보 한 번 등록
+              <ul className="space-y-2.5 sm:space-y-4 relative z-10">
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> 상품 정보 한 번 등록
                 </li>
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 주문 알림 확인 후 발송
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> 주문 알림 확인 후 발송
                 </li>
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 정산 자동 리포트 수령
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> 정산 자동 리포트
                 </li>
-                <li className="flex items-center gap-3 text-white font-bold">
-                  <CheckCircle2 size={20} className="text-brand-500 shrink-0" /> 생산·품질에만 집중
+                <li className="flex items-start gap-2 text-white font-bold text-xs sm:text-base">
+                  <CheckCircle2 size={15} className="text-brand-500 shrink-0 mt-0.5" /> 생산·품질에만 집중
                 </li>
               </ul>
             </div>
