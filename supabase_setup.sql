@@ -53,6 +53,7 @@ CREATE TABLE public.influencers (
     settlement_rate DECIMAL(5,2) NOT NULL DEFAULT 15.00,
     settlement_account VARCHAR(255),
     status VARCHAR(50) DEFAULT 'pending', -- pending | approved
+    phone VARCHAR(255),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -117,6 +118,7 @@ CREATE TABLE public.factory_applications (
     consumer_price DECIMAL(10,2) NOT NULL DEFAULT 0,
     supply_price DECIMAL(10,2) NOT NULL DEFAULT 0,
     status VARCHAR(50) DEFAULT 'pending',
+    phone VARCHAR(255),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );

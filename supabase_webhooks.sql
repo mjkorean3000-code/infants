@@ -88,7 +88,7 @@ EXECUTE FUNCTION trigger_make_webhook_on_influencer_approval();
 CREATE OR REPLACE FUNCTION trigger_make_webhook_on_influencer_apply()
 RETURNS TRIGGER AS $$
 DECLARE
-    make_webhook_url TEXT := 'https://hook.us2.make.com/a42uxt30y8h8n06i8bexr12h8mwwts33'; -- TODO: 대표님의 Make 웹훅 URL
+    make_webhook_url TEXT := 'https://hook.us2.make.com/9qgu6s4f8nke87ricmyxr54hssbkknht'; -- TODO: 대표님의 Make 웹훅 URL
     request_body JSON;
 BEGIN
     request_body := json_build_object(
@@ -96,6 +96,7 @@ BEGIN
         'application_id', NEW.id,
         'instagram_id', NEW.instagram_id,
         'email', NEW.email,
+        'phone', NEW.phone,
         'category', NEW.category,
         'created_at', NEW.created_at
     );
@@ -128,6 +129,7 @@ BEGIN
         'application_id', NEW.id,
         'company_name', NEW.company_name,
         'manager_email', NEW.manager_email,
+        'phone', NEW.phone,
         'main_category', NEW.main_category,
         'product_image_url', NEW.product_image_url,
         'consumer_price', NEW.consumer_price,

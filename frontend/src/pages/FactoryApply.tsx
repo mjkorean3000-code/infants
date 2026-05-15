@@ -87,9 +87,9 @@ function FactoryApply() {
         .from('factory_applications')
         .insert([insertData]);
 
-      // DB에 phone, agree_notification 컬럼이 아직 없을 경우 대비한 폴백 처리
+      // DB에 agree_ 관련 컬럼이 아직 없을 경우 대비한 폴백 처리 (phone은 이제 DB에 있으므로 보존)
       if (dbError && (dbError.message.includes('column') || dbError.code === 'PGRST204')) {
-        const { phone, agree_notification, ...fallbackData } = insertData as any;
+        const { agree_personal_info, agree_logistics, agree_cs_quality, agree_no_direct_trade, agree_auto_settlement, agree_notification, is_agreed, agreed_at, user_ip, terms_version, ...fallbackData } = insertData as any;
         const { error: fallbackError } = await supabase.from('factory_applications').insert([fallbackData]);
         if (fallbackError) throw fallbackError;
       } else if (dbError) {
