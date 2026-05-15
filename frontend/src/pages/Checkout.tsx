@@ -289,7 +289,6 @@ export default function Checkout() {
           {orderData.total_amount.toLocaleString()}원 결제하기
         </button>
       </div>
-      </div>
       <Footer />
     </div>
   );

@@ -135,8 +135,8 @@ export default function Login() {
           &copy; 2026 ONFANS Platform. All rights reserved.
         </p>
       </div>
+      <Footer />
     </div>
-    <Footer />
   );
 }
 // build trigger Wed May 13 17:10:10 KST 2026
