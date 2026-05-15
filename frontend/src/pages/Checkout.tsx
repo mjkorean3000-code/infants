@@ -124,7 +124,7 @@ export default function Checkout() {
 
   if (isSuccess) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-surface-950 px-6 animate-fade-in">
+      <div className="flex min-h-dvh flex-col items-center justify-center bg-surface-950 px-6 animate-fade-in">
         <div className="flex flex-col items-center rounded-[2.5rem] glass p-10 text-center shadow-premium-2xl max-w-[500px] w-full border-white/5">
           <div className="mb-8 rounded-full bg-green-500/10 border border-green-500/20 p-6 shadow-premium-lg">
             <CheckCircle2 size={56} className="text-green-400" />
@@ -143,7 +143,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white pb-40 lg:py-12">
+    <div className="min-h-dvh bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white pb-40 lg:py-12">
       <div className="mx-auto max-w-4xl lg:px-12">
         <header className="fixed top-0 left-0 right-0 z-50 flex items-center gap-4 bg-surface-950/80 backdrop-blur-xl px-6 py-5 lg:static lg:bg-transparent lg:px-0 lg:py-0 lg:mb-10 animate-fade-in">
           <button onClick={() => navigate(-1)} className="rounded-xl glass p-2 text-surface-400 hover:text-white transition-all">

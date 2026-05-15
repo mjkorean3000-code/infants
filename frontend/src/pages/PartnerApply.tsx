@@ -96,7 +96,7 @@ function PartnerApply() {
 
   if (isSuccess) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-surface-950 px-4 font-sans">
+      <div className="flex min-h-dvh items-center justify-center bg-surface-950 px-4 font-sans">
         <div className="flex flex-col items-center text-center animate-scale-in">
           <div className="mb-8 rounded-full bg-brand-500/10 p-6 shadow-premium-lg">
             <CheckCircle2 size={56} className="text-brand-500" />
@@ -114,7 +114,7 @@ function PartnerApply() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
+    <div className="min-h-dvh bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 sm:px-12 backdrop-blur-md bg-surface-950/20">
         <div className="glass-light rounded-full p-1 flex items-center shadow-premium-lg">
           <img src="/logo.jpg" alt="ONFANS" className="h-11 w-11 sm:h-14 sm:w-14 rounded-full object-cover shadow-premium-sm" />

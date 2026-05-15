@@ -23,6 +23,13 @@
 
   html {
     scroll-behavior: smooth;
+    /* 모바일 브라우저 주소창 숨김/표시 시 검은 배너 방지 */
+    background-color: #0a0a0a;
+    height: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
   }
 
   ::selection {

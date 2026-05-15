@@ -18,7 +18,7 @@ function SellerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
+    <div className="min-h-dvh bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
       {/* 모바일 최적화된 상단 내비 */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-surface-950/80 backdrop-blur-xl px-5 py-4 border-b border-white/5 lg:hidden">
         <img src="/logo.jpg" alt="ONFANS" className="h-7 object-contain" />

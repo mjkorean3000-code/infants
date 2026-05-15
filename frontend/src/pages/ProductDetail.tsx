@@ -154,7 +154,7 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center bg-surface-950">
+      <div className="flex min-h-dvh w-full flex-col items-center justify-center bg-surface-950">
         <Loader2 size={48} className="animate-spin text-brand-500 mb-4" />
         <p className="text-surface-400 font-bold animate-pulse">상품 정보를 불러오고 있습니다...</p>
       </div>
@@ -163,14 +163,14 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-surface-950 text-white font-bold">
+      <div className="flex min-h-dvh items-center justify-center bg-surface-950 text-white font-bold">
         상품을 찾을 수 없습니다.
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white pb-32">
+    <div className="min-h-dvh bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white pb-32">
       {/* 상단 내비게이션 - 모바일 최적화 */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 sm:px-12 backdrop-blur-xl bg-surface-950/50">
         <button onClick={() => navigate(-1)} className="rounded-2xl glass p-3 text-white transition-all hover:bg-white/10 active:scale-90">

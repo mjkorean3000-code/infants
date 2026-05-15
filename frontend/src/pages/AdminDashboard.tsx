@@ -16,7 +16,7 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
+    <div className="min-h-dvh bg-surface-950 font-sans selection:bg-brand-500/30 selection:text-white">
       <div className="mx-auto max-w-7xl px-6 py-12 sm:px-12 sm:py-16 flex flex-col gap-10">
         <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 animate-fade-in-up">
           <div>

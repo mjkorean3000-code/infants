@@ -73,7 +73,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface-950 px-6 selection:bg-brand-500/30">
+    <div className="flex min-h-dvh items-center justify-center bg-surface-950 px-6 selection:bg-brand-500/30">
       <div className="w-full max-w-[480px] animate-fade-in">
         <div className="mb-12 text-center">
           {/* 자물쇠 아이콘을 제거하고 로고를 대폭 강조 */}
