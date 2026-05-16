@@ -10,7 +10,7 @@ export function Footer() {
             <span className="text-surface-500 font-bold">사업자등록번호</span> 861-45-01216
           </p>
           <p>
-            <span className="text-surface-500 font-bold">사업장 소재지</span> 전라남도 나주시 신월길 54, 112동 302호 (나주역자이리버파크아파트)
+            <span className="text-surface-500 font-bold">사업장 소재지</span> 서울특별시 서초구 강남대로, 61길 17 밀라텔쉐르빌
           </p>
           <p>
             <span className="text-surface-500 font-bold">고객센터</span> 010.3536.6888
