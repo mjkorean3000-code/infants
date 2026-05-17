@@ -13,7 +13,8 @@ export function Footer() {
             <span className="text-surface-500 font-bold">사업장 소재지</span> 서울특별시 서초구 강남대로, 61길 17 밀라텔쉐르빌
           </p>
           <p>
-            <span className="text-surface-500 font-bold">고객센터</span> 010.3536.6888
+            <span className="text-surface-500 font-bold">고객센터</span> 010.3536.6888&nbsp;&nbsp;
+            <span className="text-surface-500 font-bold">이메일</span> mjkorean3000@gmail.com
           </p>
         </div>
         <p className="text-[10px] text-surface-700 mt-1">
