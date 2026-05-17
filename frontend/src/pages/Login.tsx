@@ -74,66 +74,64 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-surface-950 px-6 selection:bg-brand-500/30">
-      <div className="w-full max-w-[480px] animate-fade-in">
-        <div className="mb-12 text-center">
-          {/* 자물쇠 아이콘을 제거하고 로고를 대폭 강조 */}
-          <div className="mx-auto mb-12 flex h-40 w-40 items-center justify-center rounded-full bg-white/5 border border-white/10 p-1 shadow-premium-2xl overflow-hidden">
-            <img src="/logo.jpg" alt="ONFANS" className="w-full h-full object-cover rounded-full" />
-          </div>
-          <p className="mt-4 text-xl font-bold text-surface-400">
-            파트너 대시보드 로그인
-          </p>
-        </div>
-
-        <div className="rounded-[2.5rem] glass p-10 shadow-premium-2xl border-white/5">
-          {error && (
-            <div className="mb-8 rounded-2xl bg-red-500/10 border border-red-500/20 p-4 text-sm font-bold text-red-400 animate-shake">
-              {error}
+    <div className="flex min-h-dvh flex-col bg-surface-950 selection:bg-brand-500/30">
+      <div className="flex-1 flex items-center justify-center w-full px-6 py-12">
+        <div className="w-full max-w-[480px] animate-fade-in">
+          <div className="mb-12 text-center">
+            {/* 자물쇠 아이콘을 제거하고 로고를 대폭 강조 */}
+            <div className="mx-auto mb-12 flex h-40 w-40 items-center justify-center rounded-full bg-white/5 border border-white/10 p-1 shadow-premium-2xl overflow-hidden">
+              <img src="/logo.jpg" alt="ONFANS" className="w-full h-full object-cover rounded-full" />
             </div>
-          )}
+            <p className="mt-4 text-xl font-bold text-surface-400">
+              파트너 대시보드 로그인
+            </p>
+          </div>
 
-          <form onSubmit={handleLogin} className="flex flex-col gap-6">
-            <div className="flex flex-col gap-2.5">
-              <label className="text-xs font-black text-surface-500 uppercase tracking-widest ml-1">Instagram ID</label>
-              <div className="relative">
-                <AtSign className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-500" size={18} />
+          <div className="rounded-[2.5rem] glass p-10 shadow-premium-2xl border-white/5">
+            {error && (
+              <div className="mb-8 rounded-2xl bg-red-500/10 border border-red-500/20 p-4 text-sm font-bold text-red-400 animate-shake">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2.5">
+                <label className="text-xs font-black text-surface-500 uppercase tracking-widest ml-1">Instagram ID</label>
+                <div className="relative">
+                  <AtSign className="absolute left-5 top-1/2 -translate-y-1/2 text-surface-500" size={18} />
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="아이디 입력"
+                    value={instagramId}
+                    onChange={(e) => setInstagramId(e.target.value)}
+                    className="w-full rounded-2xl border-2 border-white/5 bg-white/5 py-4 pl-12 pr-5 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2.5">
+                <label className="text-xs font-black text-surface-500 uppercase tracking-widest ml-1">Password</label>
                 <input 
-                  type="text" 
+                  type="password" 
                   required
-                  placeholder="아이디 입력"
-                  value={instagramId}
-                  onChange={(e) => setInstagramId(e.target.value)}
-                  className="w-full rounded-2xl border-2 border-white/5 bg-white/5 py-4 pl-12 pr-5 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
+                  placeholder="비밀번호 입력"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-2xl border-2 border-white/5 bg-white/5 px-6 py-4 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
                 />
               </div>
-            </div>
 
-            <div className="flex flex-col gap-2.5">
-              <label className="text-xs font-black text-surface-500 uppercase tracking-widest ml-1">Password</label>
-              <input 
-                type="password" 
-                required
-                placeholder="비밀번호 입력"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-2xl border-2 border-white/5 bg-white/5 px-6 py-4 font-bold text-white transition-all focus:border-brand-500 focus:bg-surface-900 focus:outline-none placeholder:text-surface-700"
-              />
-            </div>
-
-            <button 
-              type="submit" 
-              disabled={isLoggingIn}
-              className="mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-white py-5 text-lg font-black text-black transition-all hover:bg-brand-500 hover:text-white active:scale-95 shadow-premium-lg disabled:opacity-50"
-            >
-              {isLoggingIn ? <Loader2 className="animate-spin" /> : '로그인'}
-            </button>
-          </form>
+              <button 
+                type="submit" 
+                disabled={isLoggingIn}
+                className="mt-4 flex w-full items-center justify-center gap-3 rounded-2xl bg-white py-5 text-lg font-black text-black transition-all hover:bg-brand-500 hover:text-white active:scale-95 shadow-premium-lg disabled:opacity-50"
+              >
+                {isLoggingIn ? <Loader2 className="animate-spin" /> : '로그인'}
+              </button>
+            </form>
+          </div>
         </div>
-
-        <p className="mt-10 text-center text-sm font-bold text-surface-600">
-          &copy; 2026 ONFANS Platform. All rights reserved.
-        </p>
       </div>
       <Footer />
     </div>
